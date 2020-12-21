@@ -1,0 +1,105 @@
+<p-table #dt [value]="filteredData" [columns]="columns" (sortFunction)="textAndDateComparator($event)" [customSort]="true" [paginator]="true" [rows]="rowsPerPage"
+         [rowsPerPageOptions]="[{ showAll: 'All' },10,15,20,30,40,50]" selectionMode="single" [dataKey]="dataKey" [(selection)]="selectedRow" paginatorDropdownAppendTo="body" editMode="row"
+         class="table table-hover ti-table large-table" (onPage)="pageChanged($event)">
+
+  <ng-template pTemplate="header">
+    <tr>
+
+      <!-- Edit and Remove columns -->
+      <th *ngIf="showDeleteColumn"></th>
+      <th *ngIf="showEditColumn"></th>
+
+      <th *ngFor="let col of columns" [pSortableColumn]="col.key" [width]="col.colWidth" [className]="col.colHeadClassName" [style.min-width]="enforceColWidth ? (col.colWidth + 'px') : 0">
+        <span [class.verticalHeader]="col.verticalHeader">{{col.title}}</span>
+        <p-sortIcon [field]="col.key"></p-sortIcon>
+      </th>
+
+    </tr> <!-- End head title row -->
+
+    <tr *ngIf="filterableTable">
+
+      <!-- Edit and Remove columns -->
+      <th *ngIf="showDeleteColumn"></th>
+      <th *ngIf="showEditColumn"></th>
+
+      <th *ngFor="let col of columns" style.color [style.max-width]="col.colWidth + 'px'" [style.min-width]="enforceColWidth ? (col.colWidth + 'px') : 0">
+
+        <!-- Text filter -->
+        <input type="text" [class.tank-number-input]="col.colCssClassName == 'linkable-cell' || col.colCssClassName =='input-width'" *ngIf="col.searchable" [(ngModel)]="filters[col.key]"
+               (ngModelChange)="filterByColumn()">
+
+        <!-- Date filter -->
+        <!--<input type="text" [class.tank-number-input]="col.colCssClassName == 'linkable-cell' || col.colCssClassName =='input-width'" *ngIf="col.searchableDateRange" [(ngModel)]="filters[col.key]"
+               (ngModelChange)="filterByColumn()" placement="bottom" [pTooltip]="dateFilterToolTip" [escape]="false" tooltipPosition="top">-->
+
+        <!-- Select filter -->
+        <!--<p-multiSelect *ngIf="col.searchableFilter" defaultLabel="&nbsp;" [options]="col.items | orderBy:'label'" [(ngModel)]="filters[col.key]" (onChange)="filterByColumn()"></p-multiSelect>-->
+
+      </th>
+
+    </tr><!-- End head filter row-->
+
+  </ng-template> <!-- End Header -->
+
+
+  <ng-template pTemplate="body" let-item let-editing="editing" let-ri="rowIndex">
+
+    <tr [pSelectableRow]="item" *ngIf="!showEditColumn">
+
+      <td *ngFor="let col of columns" [class]="getColClasses(item,col)">
+        <a *ngIf="col.link" routerLink="{{getRouterLink(item, col)}}">{{item[col.key]}}</a>
+        {{ !col.link ? getTextToDisplay(item, col) : '' }}
+      </td>
+
+      <td *ngIf="showEditColumn"> <i class="icon-icon-edit-pen round-icon"></i> </td>
+      <td *ngIf="showDeleteColumn"> <i class="icon-icon-x-outline delete-icon round-icon"></i></td>
+
+    </tr> <!-- Display only row -->
+
+    <tr [pSelectableRow]="item" [pEditableRow]="item" *ngIf="showEditColumn">
+
+      <!-- Edit and Remove columns -->
+      <td *ngIf="showDeleteColumn" class="col-delete">
+        <i class="icon-icon-x-outline delete-icon round-icon" (click)="onRowDelete(item)"></i>
+      </td>
+
+      <td *ngIf="showEditColumn" class="col-edit">
+        <i pInitEditableRow *ngIf="!editing" class="icon-icon-edit-pen round-icon edit" (click)="onRowEditStarts(item)"></i>
+        <i pSaveEditableRow *ngIf="editing" class="fas fa-check round-icon save" (click)="onRowEditSave(item); onRowEditEnds(item)"></i>
+        <i pCancelEditableRow *ngIf="editing" class="fas fa-times round-icon cancel" (click)="onRowEditEnds(item, true)"></i>
+      </td>
+
+      <!-- Data columns -->
+      <td *ngFor="let col of columns" [style.max-width]="col.colWidth + 'px'" [class]="getColClasses(item,col)">
+
+        <p-cellEditor *ngIf="col.editable">
+          <ng-template pTemplate="input">
+            <input pInputText type="text" *ngIf="!col.items" [ngModel]="getItemForKey(item,col.key)" (ngModelChange)="setItemForKey(item, col, $event)">
+            <!--<p-dropdown [options]="col.items" *ngIf="col.items" [ngModel]="getItemForKey(item,col.key)" (ngModelChange)="setItemForKey(item, col, $event)"
+                        [style]="{'width':'100%', 'min-width':'100%'}"></p-dropdown>-->
+          </ng-template>
+
+          <ng-template pTemplate="output">
+            {{ getTextToDisplay(item, col) }}
+          </ng-template>
+        </p-cellEditor> <!-- Editable col-->
+
+        <span *ngIf="!col.editable && !col.link">
+          {{ getTextToDisplay(item, col) }}
+        </span><!-- Non editable text -->
+
+        <span *ngIf="!col.editable && col.link">
+          <a *ngIf="col.link" routerLink="{{getRouterLink(item, col)}}">{{getItemForKey(item, col.key)}}</a>
+        </span><!-- Non editable link -->
+
+        <span *ngIf="col.editable && col.link && showEditableRow">
+          <a *ngIf="col.link" routerLink="{{getRouterLink(item, col)}}">{{getItemForKey(item, col.key)}}</a>
+        </span><!-- Editable link -->
+
+      </td> <!-- Editable Row -->
+
+    </tr> <!-- Editable row -->
+
+  </ng-template> <!-- End Body -->
+
+</p-table>

@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29911.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eFaktura.Web", "eFaktura.Web\eFaktura.Web.csproj", "{CF0E5AC6-6115-4D5D-A3F8-6763E846FE5B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eFaktura.Abstractions", "Abstractions\eFaktura.Abstractions\eFaktura.Abstractions.csproj", "{50BEF4A8-066F-401E-A494-E1E82A48F861}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eFaktura.Core", "Core\eFaktura.Core\eFaktura.Core.csproj", "{13E733BF-2D44-45EA-B8EC-1778B77AB4B8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eFaktura.Services", "Services\eFaktura.Services\eFaktura.Services.csproj", "{1D0B8A92-7708-4F24-85F8-AF70A689AC6E}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "eFaktura.Database", "DatabaseProject\eFaktura.Database\eFaktura.Database.sqlproj", "{E5EE36BD-661F-454E-847F-96F81F8105C7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CF0E5AC6-6115-4D5D-A3F8-6763E846FE5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF0E5AC6-6115-4D5D-A3F8-6763E846FE5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF0E5AC6-6115-4D5D-A3F8-6763E846FE5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF0E5AC6-6115-4D5D-A3F8-6763E846FE5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50BEF4A8-066F-401E-A494-E1E82A48F861}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50BEF4A8-066F-401E-A494-E1E82A48F861}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50BEF4A8-066F-401E-A494-E1E82A48F861}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50BEF4A8-066F-401E-A494-E1E82A48F861}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13E733BF-2D44-45EA-B8EC-1778B77AB4B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13E733BF-2D44-45EA-B8EC-1778B77AB4B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13E733BF-2D44-45EA-B8EC-1778B77AB4B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13E733BF-2D44-45EA-B8EC-1778B77AB4B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D0B8A92-7708-4F24-85F8-AF70A689AC6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D0B8A92-7708-4F24-85F8-AF70A689AC6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D0B8A92-7708-4F24-85F8-AF70A689AC6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D0B8A92-7708-4F24-85F8-AF70A689AC6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5EE36BD-661F-454E-847F-96F81F8105C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5EE36BD-661F-454E-847F-96F81F8105C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5EE36BD-661F-454E-847F-96F81F8105C7}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E5EE36BD-661F-454E-847F-96F81F8105C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5EE36BD-661F-454E-847F-96F81F8105C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5EE36BD-661F-454E-847F-96F81F8105C7}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0668BEC5-CC80-49D7-99FC-1F488174CCDF}
+	EndGlobalSection
+EndGlobal

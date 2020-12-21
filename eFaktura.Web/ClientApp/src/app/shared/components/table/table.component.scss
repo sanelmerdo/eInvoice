@@ -1,0 +1,66 @@
+p-sorticon {
+  top: calc(50% - 8px);
+  position: absolute;
+  right: 5px;
+}
+
+.ui-dropdown {
+  min-width: 100% !important;
+}
+
+.col-edit {
+  min-width: 85px;
+  text-align: center;
+
+  i {
+    margin-right: 5px;
+    margin-bottom: -3px;
+    margin-top: -3px;
+    border: 1ps solid #fff;
+  }
+
+  .save {
+    border: none;
+    background-color: #4CAF50;
+  }
+
+  .cancel {
+    border: none;
+    background-color: #F44336;
+    padding: 7px 9px 7px 9px;
+    font-size: 14px;
+  }
+
+  .delete {
+    border: none;
+    background-color: #F44336;
+  }
+}
+
+.delete-icon {
+  padding: 7px 8px 7px 7px !important;
+}
+
+// .col-delete {
+//   i:hover {
+//     background-color: #F44336 !important;
+//     border-color: rgb(107, 0, 0);
+//   }
+// }
+
+:host /deep/ {
+
+  .ui-sortable-column-icon {
+    float: right;
+    margin-right: -4px;
+  }
+
+  table thead tr:first-child th {
+    padding: 5px 24px 5px 5px !important;
+    position: relative;
+
+    i {
+      color: #fff !important;
+    }
+  }
+}

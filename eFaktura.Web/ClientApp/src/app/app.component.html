@@ -1,0 +1,33 @@
+<!--<body>
+  <div class="container" style="margin-top: 20px;">
+    <router-outlet></router-outlet>
+  </div>
+</body>-->
+<div class="d-flex" id="wrapper">
+  <!-- Sidebar -->
+  <div class="bg-light border-right" id="sidebar-wrapper">
+    <div class="sidebar-heading">eFaktura</div>
+    <div class="list-group list-group-flush">
+      <a routerLink="clients" class="list-group-item list-group-item-action bg-light">Komitenti</a>
+      <a routerLink="company" class="list-group-item list-group-item-action bg-light">Kompanije</a>
+      <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
+      <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+      <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
+      <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>
+    </div>
+  </div>
+  <!-- /#sidebar-wrapper -->
+  <!-- Page Content -->
+  <div id="page-content-wrapper">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    </nav>
+    <div class="container-fluid top-space">
+      <div class="p-col-12" style="padding-left: 0; padding-right: 0">
+        <app-header></app-header>
+      </div>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->
