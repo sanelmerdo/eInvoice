@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace eFaktura.Core.Models
+﻿namespace eFaktura.Core.Models
 {
-    /// <summary>
-    /// Represents client model.
-    /// </summary>
-    public class Client
+    public class Company
     {
         /// <summary>
         /// Gets or sets id.

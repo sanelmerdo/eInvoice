@@ -1,1 +1,94 @@
-<p>company works!</p>
+<p-toast [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'"></p-toast>
+<div class="p-grid">
+  <div class="p-col-12">
+    <app-table2 [cols]="companyColumns" [values]="companies" (selectedDataEvent)="selectedDataMethod($event)" (selectedClient)="selectedValues($event)"></app-table2>
+  </div>
+  <div class="p-col-12">
+    <button pButton type="button" label="Dodaj kompaniju" class="ui-button-info" (click)="open(newcompany)"></button>
+  </div>
+</div>
+
+<ng-template #newcompany let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="editProfileLabel">Dodaj firmu</h5>
+    <button type="button" class="close" (click)="closeDialog()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="editProfileForm" (ngSubmit)="onSubmit()">
+      <div class="form-group row">
+        <label for="companyName" class="col-sm-4 col-form-label">Naziv firme</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="companyName" id="companyName" [ngClass]="{ 'is-invalid': submitted && f.companyName.errors }">
+          <div *ngIf="submitted && f.companyName.errors" class="invalid-feedback">
+            <div *ngIf="f.companyName.errors.required">Ime kompanije je obavezno</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="idNumber" class="col-sm-4 col-form-label">Id broj</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="idNumber" id="idNumber" [ngClass]="{ 'is-invalid': submitted && f.idNumber.errors }">
+          <div *ngIf="submitted && f.idNumber.errors" class="invalid-feedback">
+            <div *ngIf="f.idNumber.errors.required">Id broj polje je obavezno</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="pdvNumber" class="col-sm-4 col-form-label">Pdv broj</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="pdvNumber" id="pdvNumber" [ngClass]="{ 'is-invalid': submitted && f.pdvNumber.errors }">
+          <div *ngIf="submitted && f.pdvNumber.errors" class="invalid-feedback">
+            <div *ngIf="f.pdvNumber.errors.required">Pdv broj polje je obavezno</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="address" class="col-sm-4 col-form-label">Adresa</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="address" id="address">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeDialog()">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<p-dialog header="Kompanija" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="500">
+  <div class="ui-g ui-fluid" *ngIf="company">
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="name">Ime</label>
+      </div>
+      <div class="ui-g-8">
+        <input pInputText id="name" [(ngModel)]="company.name" style="width: 100%;" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="pdvNumber">Pdv broj</label>
+      </div>
+      <div class="ui-g-8">
+        <input id="pdvNumber" [(ngModel)]="company.pdvNumber" style="width: 100%;" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="idNumber">ID broj</label>
+      </div>
+      <div class="ui-g-8">
+        <input id="idNumber" [(ngModel)]="company.idNumber" style="width: 100%;" />
+      </div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="delete()" label="Izbrisi"></button>
+      <button type="button" pButton icon="fa fa-check" (click)="change()" label="Izmijeni"></button>
+    </div>
+  </p-footer>
+</p-dialog>

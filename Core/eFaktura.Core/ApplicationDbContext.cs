@@ -1,4 +1,5 @@
-﻿using EFaktura.Core.Entities;
+﻿using eFaktura.Core.Entities;
+using EFaktura.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace eFaktura.Core
@@ -14,5 +15,7 @@ namespace eFaktura.Core
         { }
 
         private DbSet<ClientEntity> Client { get; set; }
+
+        private DbSet<CompanyEntity> Company { get; set; }
     }
 }

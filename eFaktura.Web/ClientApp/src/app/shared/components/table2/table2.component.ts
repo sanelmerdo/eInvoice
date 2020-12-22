@@ -11,9 +11,9 @@ export class Table2Component {
 
   @Input() cols: TableColumn;
   @Input() values: any;
-  selectedValue: any;
   @Output() selectedDataEvent = new EventEmitter<any>();
   @Output() selectedClient = new EventEmitter<any>();
+  selectedValue: any;
 
   onRowSelect(event) {
     this.selectedDataEvent.emit(this.selectedValue);

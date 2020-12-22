@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/components/common/messageservice';
 import { HeaderService } from '../services/shared/header.service';
+import { Client } from '../models/client';
 
 @Component({
   selector: 'app-header',
@@ -10,11 +11,11 @@ import { HeaderService } from '../services/shared/header.service';
 })
 export class HeaderComponent implements OnInit {
 
-  message: string;
+  client: Client;
 
   constructor(private data: HeaderService) { }
 
   ngOnInit() {
-    this.data.currentMessage.subscribe(message => this.message = message);
+    this.data.currentMessage.subscribe(result => this.client = result);
   }
 }

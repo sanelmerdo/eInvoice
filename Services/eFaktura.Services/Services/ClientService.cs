@@ -47,13 +47,15 @@ namespace eFaktura.Services.Services
         /// <inheritdoc />
         public async Task UpdateClient(ClientEntity clientEntity)
         {
-            var currentEntity = await ReadSingleAsync<ClientEntity>(entity => entity.PdvNumber == clientEntity.PdvNumber);
+            var currentEntity = await ReadSingleAsync<ClientEntity>(entity => entity.Id == clientEntity.Id);
 
             if (currentEntity == null)
                 throw new ArgumentNullException(nameof(currentEntity));
 
             currentEntity.ModifiedDate = DateTime.Now;
             currentEntity.Name = clientEntity.Name;
+            currentEntity.PdvNumber = clientEntity.PdvNumber;
+            currentEntity.IdNumber = clientEntity.IdNumber;
 
             await Save();
         }

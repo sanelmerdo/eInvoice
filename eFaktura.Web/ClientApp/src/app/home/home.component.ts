@@ -21,16 +21,11 @@ export class HomeComponent implements OnInit {
   clientName: string;
   editProfileForm: FormGroup;
 
-  cols: TableColumn[] = [
-    { key: "id", title: "Id", field: "id", colWidth: "50", linkable: false },
-    { key: "name", title: "Ime komitenta", field: "name", colWidth: "150", linkable: true },
-    { key: "pdvNumber", title: "PDV Broj", field: "pdvNumber", colWidth: "50", linkable: false }
-  ];
-
   clientColumns: TableColumn[] = [
-    { key: "id", title: "Id", field: "id", header: "Id", colWidth: "100", linkable: false },
-    { key: "name", title: "Ime komitenta", field: "name", header: "Ime komiteta", colWidth: "200", linkable: true },
-    { key: "pdvNumber", title: "PDV Broj", field: "pdvNumber", header: "PDV broj", colWidth: "200", linkable: false }
+    { key: "id", title: "Id", field: "id", header: "Id", colWidth: "100", linkable: true },
+    { key: "name", title: "Ime komitenta", field: "name", header: "Ime komiteta", colWidth: "200", linkable: false },
+    { key: "pdvNumber", title: "PDV Broj", field: "pdvNumber", header: "PDV broj", colWidth: "200", linkable: false },
+    { key: "idNumber", title: "ID broj", field: "idNumber", header: "ID broj", colWidth: "200", linkable: false }
   ];
 
   constructor(private clientService: ClientService,
@@ -44,7 +39,8 @@ export class HomeComponent implements OnInit {
     this.loadClients();
     this.editProfileForm = this.fb.group({
       companyName: ['', Validators.required],
-      idNumber: ['', Validators.required]
+      idNumber: ['', Validators.required],
+      pdvNumber: ['', Validators.required]
     });
   }
 
@@ -60,7 +56,10 @@ export class HomeComponent implements OnInit {
   }
 
   selectedValues(selectedValue: any) {
-    this.data.changeMessage(selectedValue['name']);
+    let client = new Client();
+    client.name = selectedValue['name'];
+    client.id = selectedValue['id'];
+    this.data.changeMessage(client);
   }
 
   cloneClient(clientInput: Client): Client {
@@ -120,18 +119,19 @@ export class HomeComponent implements OnInit {
     }
 
     this.client.name = this.editProfileForm.value["companyName"];
-    this.client.pdvNumber = this.editProfileForm.value["idNumber"];
+    this.client.idNumber = this.editProfileForm.value["idNumber"];
+    this.client.pdvNumber = this.editProfileForm.value["pdvNumber"];
 
     this.clientService.createClientEntity(this.client).subscribe(result => {
       this.messageService.add({ severity: 'success', summary: 'Komitent', detail: 'Uspijesno ste dodali komintenta!' });
+      this.loadClients();
     },
       error => {
-        this.messageService.add({ severity: 'error', summary: 'Komitent', detail: 'Doslo je do greske!' })
+        this.messageService.add({ severity: 'error', summary: 'Komitent', detail: 'Doslo je do greske!' });
+        this.loadClients();
       });
 
     this.closeDialog();
-
-    this.loadClients();
   }
 
   // convenience getter for easy access to form fields

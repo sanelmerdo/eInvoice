@@ -14,7 +14,7 @@
   <ng-template pTemplate="body" let-rowData let-value>
     <tr [pSelectableRow]="rowData">
       <td *ngFor="let col of cols">
-        <span *ngIf="col.linkable"><a routerLink="/companies" (click)="sendValues(value)">{{value[col.field]}}</a></span>
+        <span *ngIf="col.linkable"><a routerLink="/companies/id={{value[col.field]}}" (click)="sendValues(value)">{{value[col.field]}}</a></span>
         <span *ngIf="!col.linkable">{{value[col.field]}}</span>
       </td>
     </tr>

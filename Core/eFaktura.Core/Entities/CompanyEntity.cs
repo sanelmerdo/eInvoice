@@ -1,14 +1,12 @@
-﻿using System;
+﻿using EFaktura.Core.Entities;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EFaktura.Core.Entities
+namespace eFaktura.Core.Entities
 {
-    /// <summary>
-    /// Represents client entity.
-    /// </summary>
-    [Table("Client")]
-    public class ClientEntity
+    [Table("Company")]
+    public class CompanyEntity
     {
         /// <summary>
         /// Gets or sets id.
@@ -16,6 +14,17 @@ namespace EFaktura.Core.Entities
         [Key]
         [Column("ID")]
         public int Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets client id.
+        /// </summary>
+        [ForeignKey("Client")]
+        public int ClientId { get; set; }
+
+        /// <summary>
+        /// Gets or sets client associtated with this company.
+        /// </summary>
+        public ClientEntity Client { get; set; }
 
         /// <summary>
         /// Gets or sets name.
@@ -44,5 +53,11 @@ namespace EFaktura.Core.Entities
         /// Gets or sets modified date.
         /// </summary>
         public DateTime? ModifiedDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets address.
+        /// </summary>
+        [StringLength(100)]
+        public string Address { get; set; }
     }
 }

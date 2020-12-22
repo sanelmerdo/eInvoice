@@ -32,10 +32,10 @@ namespace eFaktura.Web.Controllers.Client
         }
 
         /// <summary>
-        /// Create a company entity
+        /// Create a client entity.
         /// </summary>
-        /// <param name="companyEntity"></param>
-        /// <returns></returns>
+        /// <param name="clientEntity">Client entity.</param>
+        /// <returns>A task as an asynchronous operation.</returns>
         [HttpPost("create")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateClient([FromBody]ClientEntity clientEntity)

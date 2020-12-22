@@ -15,7 +15,8 @@ namespace eFaktura.Services.Extensions
                 {
                     Id = item.Id,
                     Name = item.Name,
-                    PdvNumber = item.PdvNumber
+                    PdvNumber = item.PdvNumber,
+                    IdNumber = item.IdNumber
                 });
             });
 
