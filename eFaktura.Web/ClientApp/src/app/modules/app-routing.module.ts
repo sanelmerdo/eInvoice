@@ -4,8 +4,8 @@ import { NgModule } from "@angular/core";
 import { CompanyComponent } from "../company/company.component";
 
 const routes: Routes = [
-  { path: '**', component: HomeComponent, pathMatch: 'full' },
-  { path: 'clients', component: HomeComponent, pathMatch: 'full' },
+  { path: '**', component: HomeComponent },
+  { path: 'clients', component: HomeComponent },
   { path: 'companies/:id', component: CompanyComponent },
   { path: 'companies', component: CompanyComponent }
 ];

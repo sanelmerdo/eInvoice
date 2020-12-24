@@ -17,5 +17,7 @@ namespace eFaktura.Core
         private DbSet<ClientEntity> Client { get; set; }
 
         private DbSet<CompanyEntity> Company { get; set; }
+
+        private DbSet<OutputInvoiceEntity> OutputInvoice { get; set; }
     }
 }
