@@ -1,1 +1,142 @@
-<p>kif works!</p>
+<p-toast [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'"></p-toast>
+<div class="p-grid">
+  <div class="p-col-2">
+    <p-dropdown [options]="months" [(ngModel)]="selectedMonth" (onChange)="onOptionSelected($event)" optionLabel="name" [showClear]="true" placeholder="Izaberi mjesec" [style]="{'width':'100%'}"></p-dropdown>
+  </div>
+  <div class="p-col-2">
+    <p-dropdown [options]="years" [(ngModel)]="selectedYear" (onChange)="onOptionSelected($event)" optionLabel="name" [showClear]="true" placeholder="Izaberi godinu" [style]="{'width':'100%'}"></p-dropdown>
+  </div>
+  <div class="p-col-1">
+    <button pButton type="button" label="Dodaj" class="ui-button-secondary" (click)="open(newoutputinvoice)" style="width: 100%;" [disabled]="disabled"></button>
+  </div>
+  <div class="p-col-1">
+    <button pButton type="button" label="Pregled" class="ui-button-secondary" style="width: 100%;" [disabled]="disabled" (click)="reviewOutputInvoices()"></button>
+  </div>
+  <div class="p-col-1">
+    <button pButton type="button" label="Export" class="ui-button-secondary" style="width: 100%;" [disabled]="disabled"></button>
+  </div>
+  <div class="p-col-12">
+    <app-table2 [cols]="invoiceColumns" [values]="outputInvoices"></app-table2>
+  </div>
+</div>
+
+<ng-template #newoutputinvoice let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="newKif">Dodaj izlaznu fakturu</h5>
+    <button type="button" class="close" (click)="closeDialog()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="newKif" (ngSubmit)="onSubmit()">
+      <div class="form-group row">
+        <label for="serialNumber" class="col-sm-4 col-form-label">Serijski broj</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="serialNumber" [(ngModel)]="serialNumber" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="documentType" class="col-4 col-form-label">Tip dokumenta</label>
+        <div class="col-6">
+          <p-dropdown formControlName="selectedDocumentType" [options]="documentTypes" [(ngModel)]="selectedDocumentType" placeholder="Tip dokumenta" optionLabel="name" [showClear]="true" [style]="{'width':'100%'}"></p-dropdown>
+          <div *ngIf="submitted && f.selectedDocumentType.errors" class="invalid-feedback">
+            <div *ngIf="f.companyName.errors.required">Tip documenta polje je obavezno</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="invoiceNumber" class="col-sm-4 col-form-label">Broj fakture</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="invoiceNumber" [(ngModel)]="invoiceNumber" [style]="{'width':'100%'}" />
+          <div *ngIf="submitted && f.invoiceNumber.errors" class="invalid-feedback">
+            <div *ngIf="f.invoiceNumber.required">Documenta polje je obavezno</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="documentDate" class="col-sm-4 col-form-label">Datum dokument</label>
+        <div class="col-sm-6">
+          <p-calendar [(ngModel)]="documentDate" formControlName="documentDate"></p-calendar>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="company" class="col-sm-4 col-form-label">Partner</label>
+        <div class="col-sm-6">
+          <p-autoComplete formControlName="company" [(ngModel)]="selectedCompany" placeholder="Komitenti" [suggestions]="companyResults"
+                          (completeMethod)="searchCompany($event)" [dropdown]="true" field="name" [style]="{'width':'100%'}"></p-autoComplete>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="invoiceAmount" class="col-sm-4 col-form-label">Iznos fakture ili dokumenta</label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="invoiceAmount" (keydown.tab)="onKeyTab($event)" [(ngModel)]="invoiceAmount" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="internalInvoiceAmount" class="col-sm-4 col-form-label">Iznos interne fakture u vanposlovne svrhe</label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="internalInvoiceAmount" [(ngModel)]="internalInvoiceAmount" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="exportDeliveryAmount" class="col-sm-4 col-form-label">Iznos fakture za izvozne isporuke, na osnovu izvoznih carinskih isprava</label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="exportDeliveryAmount" [(ngModel)]="exportDeliveryAmount" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="invoiceAmountForOtherDelivery" class="col-sm-4 col-form-label">Iznos fakture za ostale isporuke oslobodjenje placanja PDV-a</label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="invoiceAmountForOtherDelivery" [(ngModel)]="invoiceAmountForOtherDelivery" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="basisAmountForCalculation" class="col-sm-4 col-form-label">Osnovica za obracun PDV-a za isporuku izvrsenu registrovanom obvezniku PDV-a</label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="basisAmountForCalculation" [(ngModel)]="basisAmountForCalculation" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="outputPDV" class="col-sm-4 col-form-label">Iznos izlaznog PDV-a za isporuku izvrsenu registrovanom obvezniku PDV-a</label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="outputPDV" [(ngModel)]="outputPDV" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="basicforCalulcationToNonRegisteredUser" class="col-sm-4 col-form-label">Osnovica za obracun PDV-a za isporuku izvrsenu licu koje nije registorvani obveznik PDV-a</label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="basicforCalulcationToNonRegisteredUser" [(ngModel)]="basicforCalulcationToNonRegisteredUser" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="outputPDVToNonRegisteredUser" class="col-sm-4 col-form-label">Iznos izlaznog PDV-a za isporuku izvršenu licu koje nije registrovani obveznik PDV-a
+        </label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="outputPDVToNonRegisteredUser" [(ngModel)]="outputPDVToNonRegisteredUser" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="outputPDV32" class="col-sm-4 col-form-label">PDV 32</label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="outputPDV32" [(ngModel)]="outputPDV32" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="outputPDV33" class="col-sm-4 col-form-label">PDV 33</label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="outputPDV33" [(ngModel)]="outputPDV33" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="outputPDV34" class="col-sm-4 col-form-label">PDV 34</label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="outputPDV34" [(ngModel)]="outputPDV34" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Sacuvaj</button>
+        <button type="button" class="btn btn-secondary" (click)="closeDialog()">Zatvori</button>
+      </div>
+    </form>
+  </div>
+</ng-template>

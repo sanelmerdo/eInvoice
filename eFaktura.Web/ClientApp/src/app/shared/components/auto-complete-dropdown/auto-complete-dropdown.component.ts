@@ -15,7 +15,6 @@ export class AutoCompleteDropdownComponent implements OnInit {
   }
 
   search(event) {
-    this.results = ['Client 1', 'Client 2', 'ajsdkasjdkasjdkasjdkajsdkasd'];
   }
 
 }

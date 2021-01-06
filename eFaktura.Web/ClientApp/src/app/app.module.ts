@@ -11,15 +11,20 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastModule } from 'primeng/toast';
 import { DialogModule } from 'primeng/dialog';
 import { CardModule } from 'primeng/card';
+import { TabViewModule } from 'primeng/tabview';
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './modules/app-routing.module';
 import { TableComponent } from './shared/components/table/table.component';
 import { HeaderComponent } from './header/header.component';
-import { AutoCompleteDropdownComponent } from './shared/components/auto-complete-dropdown/auto-complete-dropdown.component';
 import { Table2Component } from './shared/components/table2/table2.component';
 import { CompanyComponent } from './company/company.component';
+import { KifComponent } from './kif/kif.component';
+import { KufComponent } from './kuf/kuf.component';
+import { AutoCompleteDropdownComponent } from './shared/components/auto-complete-dropdown/auto-complete-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -27,9 +32,11 @@ import { CompanyComponent } from './company/company.component';
     HomeComponent,
     TableComponent,
     HeaderComponent,
-    AutoCompleteDropdownComponent,
     Table2Component,
-    CompanyComponent
+    CompanyComponent,
+    KifComponent,
+    KufComponent,
+    AutoCompleteDropdownComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -45,7 +52,10 @@ import { CompanyComponent } from './company/company.component';
     ReactiveFormsModule,
     ToastModule,
     DialogModule,
-    CardModule
+    CardModule,
+    TabViewModule,
+    DropdownModule,
+    CalendarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

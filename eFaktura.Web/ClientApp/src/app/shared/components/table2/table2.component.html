@@ -1,7 +1,7 @@
-<p-table #dt [columns]="cols" [value]="values" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedValue" (onRowSelect)="onRowSelect($event)">
+<p-table #dt [columns]="cols" [value]="values" [scrollable]="true" [paginator]="true" [rows]="10" selectionMode="single" [(selection)]="selectedValue" (onRowSelect)="onRowSelect($event)">
   <ng-template pTemplate="header" let-columns>
     <tr>
-      <th *ngFor="let col of columns">
+      <th *ngFor="let col of columns" [width]="col.colWidth" [style.min-width]="enforceColWidth ? (col.colWidth + 'px') : 0">
         {{col.header}}
       </th>
     </tr>
@@ -13,8 +13,8 @@
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-value>
     <tr [pSelectableRow]="rowData">
-      <td *ngFor="let col of cols">
-        <span *ngIf="col.linkable"><a routerLink="/companies/id={{value[col.field]}}" (click)="sendValues(value)">{{value[col.field]}}</a></span>
+      <td *ngFor="let col of cols" [width]="col.colWidth" >
+        <span *ngIf="col.linkable"><a routerLink="/companies" (click)="sendValues(value)">{{value[col.field]}}</a></span>
         <span *ngIf="!col.linkable">{{value[col.field]}}</span>
       </td>
     </tr>

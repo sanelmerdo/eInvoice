@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { TableColumn } from '../shared/components/table/tableColumn';
 import { CompanyService } from '../services/company/company.service';
 import { Company } from '../models/company';
@@ -16,9 +16,8 @@ import { Client } from '../models/client';
   providers: [MessageService]
 })
 export class CompanyComponent implements OnInit {
-
+  client: Client;
   submitted = false;
-  id: number;
   parameter: string;
   companies: Company[] = [];
   company: Company = new Company();
@@ -26,31 +25,25 @@ export class CompanyComponent implements OnInit {
   displayDialog: boolean;
 
   companyColumns: TableColumn[] = [
-    { key: "id", title: "Id", field: "id", header: "Id", colWidth: "100", linkable: false },
-    { key: "name", title: "Ime komitenta", field: "name", header: "Ime firme", colWidth: "200", linkable: false },
-    { key: "pdvNumber", title: "PDV Broj", field: "pdvNumber", header: "PDV broj", colWidth: "200", linkable: false },
-    { key: "idNumber", title: "ID broj", field: "idNumber", header: "ID broj", colWidth: "200", linkable: false },
-    { key: "address", title: "Adresa", field: "address", header: "Adresa", colWidth: "200", linkable: false }
+    { key: "id", title: "Id", field: "id", header: "Id", colWidth: 100, linkable: false },
+    { key: "name", title: "Ime komitenta", field: "name", header: "Ime firme", colWidth: 200, linkable: false },
+    { key: "pdvNumber", title: "PDV Broj", field: "pdvNumber", header: "PDV broj", colWidth: 200, linkable: false },
+    { key: "idNumber", title: "ID broj", field: "idNumber", header: "ID broj", colWidth: 200, linkable: false },
+    { key: "address", title: "Adresa", field: "address", header: "Adresa", colWidth: 200, linkable: false }
   ];
 
-  constructor(private route: ActivatedRoute,
-              private companyService: CompanyService,
+  constructor(private companyService: CompanyService,
               private messageService: MessageService,
               private fb: FormBuilder,
               private modalService: NgbModal,
-              private data: HeaderService) {
-    route.params.subscribe(params => this.parameter = params.id);
-    if (this.parameter.includes('=')) {
-      let array = this.parameter.split("=");
-      this.id = Number(array[1]);
-    }
-    else {
-      let client: Client;
-      this.data.currentMessage.subscribe(result => client = result);
-      this.id = client.id;
+              private data: HeaderService,
+              private router: Router) {
+    this.data.currentMessage.subscribe(result => this.client = result);
+    if (this.client == null || this.client === undefined || this.client.id === undefined) {
+      this.router.navigateByUrl('/clients');
     }
   }
-
+  
   ngOnInit() {
     this.loadCompanies();
     this.editProfileForm = this.fb.group({
@@ -83,7 +76,7 @@ export class CompanyComponent implements OnInit {
   }
 
   loadCompanies() {
-    this.companyService.getAllCompanies(this.id).subscribe(result => {
+    this.companyService.getAllCompanies(this.client.id).subscribe(result => {
       this.companies = result;
     });
   }
@@ -112,7 +105,7 @@ export class CompanyComponent implements OnInit {
     this.company.name = this.editProfileForm.value["companyName"];
     this.company.idNumber = this.editProfileForm.value["idNumber"];
     this.company.pdvNumber = this.editProfileForm.value["pdvNumber"];
-    this.company.clientId = this.id;
+    this.company.clientId = this.client.id;
 
     this.companyService.createCompany(this.company).subscribe(result => {
       this.messageService.add({ severity: 'success', summary: 'Kompanija', detail: 'Uspijesno ste dodali firmu!' });

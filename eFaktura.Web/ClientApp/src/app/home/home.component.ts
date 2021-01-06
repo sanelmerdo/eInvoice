@@ -22,10 +22,10 @@ export class HomeComponent implements OnInit {
   editProfileForm: FormGroup;
 
   clientColumns: TableColumn[] = [
-    { key: "id", title: "Id", field: "id", header: "Id", colWidth: "100", linkable: true },
-    { key: "name", title: "Ime komitenta", field: "name", header: "Ime komiteta", colWidth: "200", linkable: false },
-    { key: "pdvNumber", title: "PDV Broj", field: "pdvNumber", header: "PDV broj", colWidth: "200", linkable: false },
-    { key: "idNumber", title: "ID broj", field: "idNumber", header: "ID broj", colWidth: "200", linkable: false }
+    { key: "id", title: "Id", field: "id", header: "Id", colWidth: 100, linkable: true },
+    { key: "name", title: "Ime komitenta", field: "name", header: "Ime komiteta", colWidth: 200, linkable: false },
+    { key: "pdvNumber", title: "PDV Broj", field: "pdvNumber", header: "PDV broj", colWidth: 200, linkable: false },
+    { key: "idNumber", title: "ID broj", field: "idNumber", header: "ID broj", colWidth: 200, linkable: false }
   ];
 
   constructor(private clientService: ClientService,

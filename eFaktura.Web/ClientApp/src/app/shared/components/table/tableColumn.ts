@@ -10,7 +10,7 @@ export interface TableColumn {
   header?: string;
 
   /** Column width for the column */
-  colWidth?: string;
+  colWidth?: number;
   /** Is the column sortable (default: true)*/
   sortable?: boolean;
   /** Css class(es) to add to table column */

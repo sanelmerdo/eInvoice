@@ -29,6 +29,7 @@ namespace eFaktura.Services.Extensions
             // Add services
             services.TryAddScoped<IClientService, ClientService>();
             services.TryAddScoped<ICompanyService, CompanyService>();
+            services.TryAddScoped<IOutputInvoiceService, OutputInvoiceService>();
             
             // Add service db context
             return services.AddDataServiceDbContext<ApplicationDbContext>(configuration.GetConnectionString("DefaultConnection"));

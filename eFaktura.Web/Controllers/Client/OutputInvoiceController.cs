@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using eFaktura.Abstractions;
 using eFaktura.Core.Entities;
@@ -26,9 +25,25 @@ namespace eFaktura.Web.Controllers.Client
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         public async Task<IActionResult> InsertOutputInvoice([FromBody] OutputInvoiceEntity entity)
         {
-            entity.CreateDate = DateTime.Now;
-
             await OutputInvoiceService.InsertOutputInvoice(entity);
+
+            return Ok();
+        }
+
+        [HttpGet("client/{clientId}/taxperiod/{taxPeriod}")]
+        [ProducesResponseType(typeof(IEnumerable<OutputInvoiceEntity>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllOutputInvoicesPerPeriodAndClientId(int clientId, string taxPeriod)
+        {
+            var result = await OutputInvoiceService.GetAllOutputInvoicesPerPeriodAndClientId(taxPeriod, clientId);
+
+            return this.ToJsonResult(result);
+        }
+
+        [HttpPut("update")]
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateOutputInvoice([FromBody] OutputInvoiceEntity entity)
+        {
+            await OutputInvoiceService.UpdateOutputInvoice(entity);
 
             return Ok();
         }

@@ -30,12 +30,22 @@
     <None Remove="ClientApp\src\app\app-routing.module.ts" />
     <None Remove="ClientApp\src\app\models\client.ts" />
     <None Remove="ClientApp\src\app\models\company.ts" />
+    <None Remove="ClientApp\src\app\models\documentType.ts" />
+    <None Remove="ClientApp\src\app\models\month.ts" />
+    <None Remove="ClientApp\src\app\models\oridinalNumber.ts" />
+    <None Remove="ClientApp\src\app\models\outputInvoice.ts" />
+    <None Remove="ClientApp\src\app\models\year.ts" />
     <None Remove="ClientApp\src\app\shared\components\table\tableColumn.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\models\client.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\company.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\documentType.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\month.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\oridinalNumber.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\outputInvoice.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\year.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\modules\app-routing.module.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\components\table\tableColumn.ts" />
   </ItemGroup>
@@ -44,6 +54,7 @@
     <Folder Include="ClientApp\src\app\services\http\" />
     <Folder Include="ClientApp\src\app\services\client\" />
     <Folder Include="ClientApp\src\app\services\company\" />
+    <Folder Include="ClientApp\src\app\services\invoice\" />
     <Folder Include="ClientApp\src\app\services\shared\" />
   </ItemGroup>
 

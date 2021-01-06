@@ -32,6 +32,10 @@ body {
     padding-top: 15px;
 }
 
+.active{
+    background-color: grey;
+}
+
 @media (min-width: 768px) {
   #sidebar-wrapper {
     margin-left: 0;

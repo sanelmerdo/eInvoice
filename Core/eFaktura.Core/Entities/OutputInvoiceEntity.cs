@@ -35,13 +35,13 @@ namespace eFaktura.Core.Entities
         public string TaxPeriod { get; set; }
 
         /// <summary>
-        /// Gets or sets ordinal number of this file.
+        /// Gets or sets oridinal number.
         /// </summary>
         [StringLength(2)]
-        public string FileNumber { get; set; }
+        public string OridinalNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets serial number.
+        /// Gets or sets ordinal number of this file.
         /// </summary>
         [StringLength(10)]
         public string SerialNumber { get; set; }
@@ -65,12 +65,6 @@ namespace eFaktura.Core.Entities
         public string DocumentDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the date when this invoice was received.
-        /// </summary>
-        [StringLength(10)]
-        public string DocumentReceivedDate { get; set; }
-
-        /// <summary>
         /// Gets or sets company id.
         /// </summary>
         [ForeignKey("Company")]
@@ -84,56 +78,65 @@ namespace eFaktura.Core.Entities
         /// <summary>
         /// Gets or sets invoice amount without PDV.
         /// </summary>
-        public decimal InvoiceAmountWithoutPDV { get; set; }
+        public decimal InvoiceAmount { get; set; }
 
         /// <summary>
         /// Gets or sets invoice amount with PDV.
         /// </summary>
-        public decimal InvooiceAmountWithPDV { get; set; }
+        public decimal InternalInvoiceAmount { get; set; }
 
         /// <summary>
         /// Gets or sets flat rate fee amount.
         /// </summary>
-        public decimal FlatRateFeeAmount { get; set; }
+        public decimal ExportDeliveryAmount { get; set; }
 
         /// <summary>
         /// Gets or sets input pdv amount.
         /// </summary>
-        public decimal InputPdvAmount { get; set; }
+        public decimal InvoiceAmountForOtherDelivery { get; set; }
 
         /// <summary>
-        /// Gets or sets refused pdv amount.
+        /// Gets or sets basis amount for calculation.
         /// </summary>
-        public decimal RefusedInputPdvAmout { get; set; }
+        public decimal BasisAmountForCalculation { get; set; }
 
         /// <summary>
         /// Gets or sets non refused input pdv amount.
         /// </summary>
-        public decimal NonRefusedInputPdv { get; set; }
+        public decimal OutputPDV { get; set; }
 
         /// <summary>
         /// Gets or sets non refused input pdv 32.
         /// </summary>
-        public decimal NonRefusedInputPdv32 { get; set; }
+        public decimal BasicforCalulcationToNonRegisteredUser { get; set; }
 
+        /// <summary>
+        /// Gets or sets output pdv amount to non registered user.
+        /// </summary>
+        public decimal OutputPDVToNonRegisteredUser { get; set; }
+
+        /// <summary>
+        /// Gets or sets output pdv amount 32.
+        /// </summary>
+        public decimal OutputPDV32 { get; set; }
         /// <summary>
         /// Gets or sets non refused input pdv 33.
         /// </summary>
-        public decimal NonRefusedInputPdv33 { get; set; }
+        public decimal OutputPDV33 { get; set; }
 
         /// <summary>
         /// Gets or sets non refused pdv amount 34.
         /// </summary>
-        public decimal NonRefusedInputPdv34 { get; set; }
+        public decimal OutputPDV34 { get; set; }
 
         /// <summary>
         /// Gets or sets create date.
         /// </summary>
-        public DateTime CreateDate { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         /// <summary>
         /// Gets or sets modified date.
         /// </summary>
-        public DateTime ModifiedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
     }
 }
