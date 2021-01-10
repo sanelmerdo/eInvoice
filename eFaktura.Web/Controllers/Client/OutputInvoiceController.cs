@@ -47,5 +47,14 @@ namespace eFaktura.Web.Controllers.Client
 
             return Ok();
         }
+
+        [HttpDelete("delete/{id}")]
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
+        public async Task<IActionResult> DeleteOutputInvoice(int id)
+        {
+            await OutputInvoiceService.DeleteOutputInvoice(id);
+
+            return Ok();
+        }
     }
 }

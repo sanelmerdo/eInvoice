@@ -28,4 +28,8 @@ export class CompanyService {
   public updateCompany(company: Company): Observable<any> {
     return this.http.putRequest("company/update", company);
   }
+
+  public getCompanyById(id: number): Observable<any> {
+    return this.http.getRequest<Company>("company/" + id);
+  }
 }

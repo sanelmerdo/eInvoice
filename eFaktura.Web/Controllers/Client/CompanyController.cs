@@ -21,7 +21,16 @@ namespace eFaktura.Web.Controllers.Client
         public async Task<IActionResult> GetAllCompanies(int id)
         {
             var result = await CompanyService.GetAllCompanies(id);
-            //var companies = result.Transform();
+
+            return this.ToJsonResult(result);
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(CompanyEntity), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetCompanyById(int id)
+        {
+            var result = await CompanyService.GetCompanyById(id);
+
             return this.ToJsonResult(result);
         }
 

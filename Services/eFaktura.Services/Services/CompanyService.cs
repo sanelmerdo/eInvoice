@@ -44,6 +44,9 @@ namespace eFaktura.Services.Services
                                                                                      });
 
         /// <inheritdoc />
+        public async Task<CompanyEntity> GetCompanyById(int companyId) => await ReadSingleNoTrackingAsync<CompanyEntity>(entity => entity.Id == companyId);
+
+        /// <inheritdoc />
         public async Task UpdateCompany(CompanyEntity companyEntity)
         {
             var currentEntity = await ReadSingleAsync<CompanyEntity>(entity => entity.Id == companyEntity.Id);

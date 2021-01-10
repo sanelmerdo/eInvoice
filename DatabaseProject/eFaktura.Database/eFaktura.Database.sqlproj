@@ -62,5 +62,6 @@
     <Build Include="Tables\Client.sql" />
     <Build Include="Tables\Company.sql" />
     <Build Include="Tables\OutputInvoice.sql" />
+    <Build Include="Tables\InputInvoice.sql" />
   </ItemGroup>
 </Project>

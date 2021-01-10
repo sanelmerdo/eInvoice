@@ -27,5 +27,12 @@ namespace eFaktura.Abstractions
         /// <param name="entity">Output entity.</param>
         /// <returns>A task as an asynchronous operation.</returns>
         Task UpdateOutputInvoice(OutputInvoiceEntity entity);
+
+        /// <summary>
+        /// Deletes output invoice.
+        /// </summary>
+        /// <param name="id">output invoice id</param>
+        /// <returns>A task as an asynchronous operation.</returns>
+        Task DeleteOutputInvoice(int id);
     }
 }

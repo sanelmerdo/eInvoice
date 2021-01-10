@@ -36,24 +36,25 @@ export class KifComponent implements OnInit {
   companies: Company[] = [];
   selectedCompany: Company;
   invoiceAmount: number;
-  outputInvoice: OutputInvoice;
+  outputInvoice: OutputInvoice = new OutputInvoice();
   outputInvoices: OutputInvoice[] = [];
+  displayDialog: boolean;
 
   invoiceColumns: TableColumn[] = [
     { key: "id", title: "Id", field: "id", header: "Id", linkable: false, colWidth: 70 },
     { key: "taxPeriod", title: "Porezni period", field: "taxPeriod", header: "Porezni period", colWidth: 70 },
     { key: "serialNumber", title: "Redni broj", field: "serialNumber", header: "Redni broj", colWidth: 70 },
-    { key: "documentType", title: "Tip dok", field: "documentType", header: "Tip dok", colWidth: 50 },
+    { key: "documentType", title: "Tip dokumenta", field: "documentType", header: "Tip dok", colWidth: 70 },
     { key: "invoiceNumber", title: "Broj fakture", field: "invoiceNumber", header: "Broj fakture", colWidth: 150 },
     { key: "documentDate", title: "Datum naloga", field: "documentDate", header: "Datum naloga", colWidth: 100 },
-    { key: "invoiceAmount", title: "Vrijednost fakture", field: "invoiceAmount", header: "Vrijednost fakture", colWidth: 100 },
-    { key: "internalInvoiceAmount", title: "Iznos Int.F", field: "internalInvoiceAmount", header: "Iznos Int.F", colWidth: 100 },
-    { key: "exportDeliveryAmount", title: "Iznos Izv.F.", field: "invoiceNumber", header: "Iznos Izv.F.", colWidth: 100 },
-    { key: "invoiceAmountForOtherDelivery", title: "IFzDI", field: "invoiceAmountForOtherDelivery", header: "IFzDI", colWidth: 100 },
-    { key: "basisAmountForCalculation", title: "OzO Pdv-a", field: "basisAmountForCalculation", header: "OzO Pdv-a", colWidth: 100 },
-    { key: "outputPDV", title: "Izl Pdv", field: "outputPDV", header: "Izl Pdv", colWidth: 100 },
-    { key: "basicforCalulcationToNonRegisteredUser", title: "OzO Pdv-a nereg.koris.", field: "basicforCalulcationToNonRegisteredUser", header: "OzO Pdv-a nereg.koris.", colWidth: 100 },
-    { key: "outputPDVToNonRegisteredUser", title: "IzlPdv nereg.koris", field: "outputPDVToNonRegisteredUser", header: "IzlPdv nereg.koris", colWidth: 100 },
+    { key: "invoiceAmount", title: "Iznos fakture", field: "invoiceAmount", header: "Iznos fakture", colWidth: 100 },
+    { key: "internalInvoiceAmount", title: "Iznos Interne fakture", field: "internalInvoiceAmount", header: "Iznos Interne fakture", colWidth: 100 },
+    { key: "exportDeliveryAmount", title: "Iznos fakture za izvozne isporuke", field: "exportDeliveryAmount", header: "Iznos fakture za izvozne isporuke", colWidth: 100 },
+    { key: "invoiceAmountForOtherDelivery", title: "Iznos fakture za ostale isporuke", field: "invoiceAmountForOtherDelivery", header: "Iznos fakture za ostale isporuke", colWidth: 100 },
+    { key: "basisAmountForCalculation", title: "Osnovica za obracun PDV-a reg. obvezniku", field: "basisAmountForCalculation", header: "Osnovica za obracun PDV-a reg. obvezniku", colWidth: 100 },
+    { key: "outputPDV", title: "Izlazni Pdv", field: "outputPDV", header: "Izlazni Pdv", colWidth: 100 },
+    { key: "basicforCalulcationToNonRegisteredUser", title: "Osnovica za obracun PDV-a nereg. korisniku", field: "basicforCalulcationToNonRegisteredUser", header: "Osnovica za obracun PDV-a nereg. korisniku", colWidth: 100 },
+    { key: "outputPDVToNonRegisteredUser", title: "Iznos izl.PDV-a izvrsenu nereg. korisniku", field: "outputPDVToNonRegisteredUser", header: "Iznos izl.PDV-a izvrsenu nereg. korisniku", colWidth: 100 },
     { key: "outputPDV32", title: "Pdv 32", field: "outputPDV32", header: "Pdv 32", colWidth: 100 },
     { key: "outputPDV33", title: "Pdv 33", field: "outputPDV33", header: "Pdv 33", colWidth: 100 },
     { key: "outputPDV34", title: "Pdv 34", field: "outputPDV34", header: "Pdv 34", colWidth: 100 }
@@ -75,7 +76,6 @@ export class KifComponent implements OnInit {
   ]
 
   years: Year[] = [
-    { name: '2020', code: '20' },
     { name: '2021', code: '21' },
     { name: '2022', code: '22' },
     { name: '2023', code: '23' },
@@ -221,15 +221,6 @@ export class KifComponent implements OnInit {
       });
   }
 
-  onSubmitNewKif() {
-
-    if (this.newKif.invalid) {
-      return;
-    }
-
-    console.log(this.selectedMonth);
-  }
-
   closeDialog() {
     this.submitted = false;
     this.newKif.reset();
@@ -290,5 +281,53 @@ export class KifComponent implements OnInit {
 
   clearFields() {
     this.newKif.reset();
+  }
+
+  selectedDataMethod(selectedData: any) {
+    this.outputInvoice = this.cloneOutputInvoice(selectedData);
+    this.documentDate = new Date(this.outputInvoice.documentDate);
+    this.companyService.getCompanyById(this.outputInvoice.companyId).subscribe(result => {
+      this.selectedCompany = result;
+    });
+    this.outputInvoice.invoiceAmount = Number(this.outputInvoice.invoiceAmount.toFixed(2));
+    this.displayDialog = true;
+  }
+
+  cloneOutputInvoice(outputInvoiceinput: OutputInvoice): OutputInvoice {
+    let outputInvoice: OutputInvoice = new OutputInvoice();
+    Object.entries(outputInvoiceinput).forEach(
+
+      ([key, value]) => {
+        outputInvoice[key] = value;
+      }
+    );
+
+    return outputInvoice;
+  }
+
+  delete() {
+    this.outputInvoiceSevice.deleteOutputInvoice(this.outputInvoice.id).subscribe(result => {
+      this.loadOutputInvoices();
+      this.messageService.add({ severity: 'success', summary: 'Uspijesno', detail: 'Uspijesno izbrisana izlazna faktura' });
+    },
+      error => {
+        this.messageService.add({ severity: 'error', summary: 'Greska', detail: 'Doslo je do greske prilikom brisanja izlazne fakture' });
+      });
+    this.displayDialog = false;
+  }
+
+  change() {
+    this.outputInvoice.documentType = this.selectedDocumentType.code;
+    this.outputInvoice.companyId = this.selectedCompany.id;
+    this.outputInvoice.documentDate = this.datepipe.transform(this.documentDate, 'yyyy-MM-dd');
+    this.outputInvoiceSevice.updateOutputInvoice(this.outputInvoice).subscribe(result => {
+      this.loadOutputInvoices();
+      this.messageService.add({ severity: 'success', summary: 'Uspijesno', detail: 'Uspijesno je izmijenjena izlazna faktura' });
+    },
+      error => {
+        this.messageService.add({ severity: 'error', summary: 'Greska', detail: 'Doslo je do greske prilikom izmijene izlazne fakture' });
+      });
+
+    this.displayDialog = false;
   }
 }

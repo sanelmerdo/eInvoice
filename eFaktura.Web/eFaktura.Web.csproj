@@ -31,6 +31,7 @@
     <None Remove="ClientApp\src\app\models\client.ts" />
     <None Remove="ClientApp\src\app\models\company.ts" />
     <None Remove="ClientApp\src\app\models\documentType.ts" />
+    <None Remove="ClientApp\src\app\models\inputInvoice.ts" />
     <None Remove="ClientApp\src\app\models\month.ts" />
     <None Remove="ClientApp\src\app\models\oridinalNumber.ts" />
     <None Remove="ClientApp\src\app\models\outputInvoice.ts" />
@@ -42,6 +43,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\models\client.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\company.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\documentType.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\inputInvoice.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\month.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\oridinalNumber.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\outputInvoice.ts" />

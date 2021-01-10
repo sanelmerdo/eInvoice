@@ -16,4 +16,12 @@ export class OutputInvoiceService {
   public getAllOutputInvoicesPerPeriodAndClientId(clientId: number, taxPeriod: string) {
     return this.http.getRequest<OutputInvoice[]>("outputInvoice/client/" + clientId + "/taxperiod/" + taxPeriod);
   }
+
+  public updateOutputInvoice(outputInvoice: OutputInvoice) {
+    return this.http.putRequest<any>("outputInvoice/update/", outputInvoice);
+  }
+
+  public deleteOutputInvoice(id: number) {
+    return this.http.deleteRequest<any>("outputInvoice/delete/" + id);
+  }
 }

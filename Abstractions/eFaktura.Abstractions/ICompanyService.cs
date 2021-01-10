@@ -32,5 +32,12 @@ namespace eFaktura.Abstractions
         /// <param name="entity">Company entity.</param>
         /// <returns>A task as an asynchronous operation.</returns>
         Task UpdateCompany(CompanyEntity entity);
+
+        /// <summary>
+        /// Retrieves company by company id.
+        /// </summary>
+        /// <param name="companyId">Company id.</param>
+        /// <returns>A company entity as an asynchronous operation.</returns>
+        Task<CompanyEntity> GetCompanyById(int companyId);
     }
 }

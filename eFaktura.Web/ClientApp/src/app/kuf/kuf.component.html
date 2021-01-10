@@ -1,1 +1,266 @@
-<p>kuf works!</p>
+<p-toast [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'"></p-toast>
+<div class="p-grid">
+  <div class="p-col-2">
+    <p-dropdown [options]="months" [(ngModel)]="selectedMonth" (onChange)="onOptionSelected($event)" optionLabel="name" [showClear]="true" placeholder="Izaberi mjesec" [style]="{'width':'100%'}"></p-dropdown>
+  </div>
+  <div class="p-col-2">
+    <p-dropdown [options]="years" [(ngModel)]="selectedYear" (onChange)="onOptionSelected($event)" optionLabel="name" [showClear]="true" placeholder="Izaberi godinu" [style]="{'width':'100%'}"></p-dropdown>
+  </div>
+  <div class="p-col-1">
+    <button pButton type="button" label="Dodaj" class="ui-button-secondary" (click)="open(newinputinvoice)" style="width: 100%;" [disabled]="disabled"></button>
+  </div>
+  <div class="p-col-1">
+    <button pButton type="button" label="Pregled" class="ui-button-secondary" style="width: 100%;" [disabled]="disabled" (click)="reviewInputInvoices()"></button>
+  </div>
+  <div class="p-col-1">
+    <button pButton type="button" label="Export" class="ui-button-secondary" style="width: 100%;" [disabled]="disabled"></button>
+  </div>
+  <div class="p-col-12">
+    <app-table2 [cols]="invoiceColumns" [values]="inputInvoices" (selectedDataEvent)="selectedDataMethod($event)"></app-table2>
+  </div>
+</div>
+
+<ng-template #newinputinvoice let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="newKuf">Dodaj ulaznu fakturu</h5>
+    <button type="button" class="close" (click)="closeDialog()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="newKuf" (ngSubmit)="onSubmit()">
+      <div class="form-group row">
+        <label for="serialNumber" class="col-sm-4 col-form-label">Serijski broj</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="serialNumber" [(ngModel)]="serialNumber" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="documentType" class="col-4 col-form-label">Tip dokumenta</label>
+        <div class="col-6">
+          <p-dropdown formControlName="selectedDocumentType" [options]="documentTypes" [(ngModel)]="selectedDocumentType" placeholder="Tip dokumenta" optionLabel="name" [showClear]="true" [style]="{'width':'100%'}"></p-dropdown>
+          <div *ngIf="submitted && f.selectedDocumentType.errors" class="invalid-feedback">
+            <div *ngIf="f.companyName.errors.required">Tip documenta polje je obavezno</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="invoiceNumber" class="col-sm-4 col-form-label">Broj fakture</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" formControlName="invoiceNumber" [(ngModel)]="invoiceNumber" [style]="{'width':'100%'}" />
+          <div *ngIf="submitted && f.invoiceNumber.errors" class="invalid-feedback">
+            <div *ngIf="f.invoiceNumber.required">Documenta polje je obavezno</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="documentDate" class="col-sm-4 col-form-label">Datum dokument</label>
+        <div class="col-sm-6">
+          <p-calendar [(ngModel)]="documentDate" formControlName="documentDate"></p-calendar>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="documentReceivedDate" class="col-sm-4 col-form-label">Datum prijema dokument</label>
+        <div class="col-sm-6">
+          <p-calendar [(ngModel)]="documentReceivedDate" formControlName="documentReceivedDate"></p-calendar>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="company" class="col-sm-4 col-form-label">Partner</label>
+        <div class="col-sm-6">
+          <p-autoComplete formControlName="company" [(ngModel)]="selectedCompany" placeholder="Komitenti" [suggestions]="companyResults"
+                          (completeMethod)="searchCompany($event)" [dropdown]="true" field="name" [style]="{'width':'100%'}"></p-autoComplete>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="invoiceAmountWithoutPdv" class="col-sm-4 col-form-label">Iznos fakture bez PDV-a</label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="invoiceAmountWithoutPdv" (keydown.tab)="onKeyTab($event)" [(ngModel)]="invoiceAmountWithoutPdv" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="invoiceAmountWithPdv" class="col-sm-4 col-form-label">Iznos fakture sa PDV-om</label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="invoiceAmountWithPdv" [(ngModel)]="invoiceAmountWithPdv" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="flatFeeAmount" class="col-sm-4 col-form-label">Iznos pausalne naknade</label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="flatFeeAmount" [(ngModel)]="flatFeeAmount" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputPdvAmount" class="col-sm-4 col-form-label">Iznos ulaznog PDV-a</label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="inputPdvAmount" [(ngModel)]="inputPdvAmount" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputPdvWhichCanBeRefused" class="col-sm-4 col-form-label">Ulazni PDV koji se moze odbiti</label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="inputPdvWhichCanBeRefused" [(ngModel)]="inputPdvWhichCanBeRefused" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputPdvWhichCannotBeRefused" class="col-sm-4 col-form-label">Ulazni PDV koji se ne moze odbiti</label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="inputPdvWhichCannotBeRefused" [(ngModel)]="inputPdvWhichCannotBeRefused" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputPdv32" class="col-sm-4 col-form-label">Ulanzi PDV koji se unosi u polje 32</label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="inputPdv32" [(ngModel)]="inputPdv32" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputPdv33" class="col-sm-4 col-form-label">Ulazni PDV koji se unosi u polje 33</label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="inputPdv33" [(ngModel)]="inputPdv33" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputPdv34" class="col-sm-4 col-form-label">Ulazni PDV koji se unosi u polje 34</label>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" formControlName="inputPdv34" [(ngModel)]="inputPdv34" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Sacuvaj</button>
+        <button type="button" class="btn btn-secondary" (click)="closeDialog()">Zatvori</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<p-dialog header="Ulazna faktura" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="700">
+  <div class="ui-g ui-fluid" *ngIf="inputInvoice">
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="serialNumber">Serijski broj</label>
+      </div>
+      <div class="ui-g-8">
+        <input pInputText id="serialNumber" [(ngModel)]="inputInvoice.serialNumber" style="width: 100%;" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="documentType">Tip dokumenta</label>
+      </div>
+      <div class="ui-g-8">
+        <p-dropdown [options]="documentTypes" [style]="{'width':'100%'}" [(ngModel)]="selectedDocumentType" optionLabel="name"></p-dropdown>
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="invoiceNumber">Broj fakture</label>
+      </div>
+      <div class="ui-g-8">
+        <input id="invoiceNumber" [(ngModel)]="inputInvoice.invoiceNumber" style="width: 100%;" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="documentDate">Datum dokumenta</label>
+      </div>
+      <div class="ui-g-8">
+        <p-calendar [(ngModel)]="documentDate"></p-calendar>
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="documentReceivedDate">Datum prijema dokumenta</label>
+      </div>
+      <div class="ui-g-8">
+        <p-calendar [(ngModel)]="documentReceivedDate"></p-calendar>
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="company">Partner</label>
+      </div>
+      <div class="ui-g-8">
+        <p-autoComplete [(ngModel)]="selectedCompany" [suggestions]="companyResults" (completeMethod)="searchCompany($event)" [dropdown]="true" field="name" [style]="{'width':'100%'}"></p-autoComplete>
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="invoiceAmountWithoutPdv">Iznos fakture bez PDV-a</label>
+      </div>
+      <div class="ui-g-8">
+        <input type="number" [(ngModel)]="inputInvoice.invoiceAmountWithoutPdv" placeholder="0.00" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="invoiceAmountWithPdv">Iznos fakture sa PDV-om</label>
+      </div>
+      <div class="ui-g-8">
+        <input type="number" [(ngModel)]="inputInvoice.invoiceAmountWithPdv" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="flatFeeAmount">Iznos pausalne naknade</label>
+      </div>
+      <div class="ui-g-8">
+        <input type="number" [(ngModel)]="inputInvoice.flatFeeAmount" />
+      </div>
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-4">
+      <label for="inputPdvAmount">Iznos ulaznog PDV-a</label>
+    </div>
+    <div class="ui-g-8">
+      <input type="number" [(ngModel)]="inputInvoice.inputPdvAmount" />
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-4">
+      <label for="inputPdvWhichCanBeRefused">Ulazni PDV koji se moze odbiti</label>
+    </div>
+    <div class="ui-g-8">
+      <input type="number" [(ngModel)]="inputInvoice.inputPdvWhichCanBeRefused" placeholder="0.00" />
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-4">
+      <label for="inputPdvWhichCannotBeRefused">Ulazni PDV koji se moze odbiti</label>
+    </div>
+    <div class="ui-g-8">
+      <input type="number" [(ngModel)]="inputInvoice.inputPdvWhichCannotBeRefused" />
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-4">
+      <label for="inputPdv32">Ulazni PDV 32</label>
+    </div>
+    <div class="ui-g-8">
+      <input type="number" [(ngModel)]="inputInvoice.inputPdv32" />
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-4">
+      <label for="inputPdv32">Ulazni PDV 33</label>
+    </div>
+    <div class="ui-g-8">
+      <input type="number" [(ngModel)]="inputInvoice.inputPdv33" />
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-4">
+      <label for="inputPdv32">Ulazni PDV 34</label>
+    </div>
+    <div class="ui-g-8">
+      <input type="number" [(ngModel)]="inputInvoice.inputPdv34" />
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="delete()" label="Izbrisi"></button>
+      <button type="button" pButton icon="fa fa-check" (click)="change()" label="Izmijeni"></button>
+    </div>
+  </p-footer>
+</p-dialog>

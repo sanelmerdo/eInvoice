@@ -16,7 +16,7 @@
     <button pButton type="button" label="Export" class="ui-button-secondary" style="width: 100%;" [disabled]="disabled"></button>
   </div>
   <div class="p-col-12">
-    <app-table2 [cols]="invoiceColumns" [values]="outputInvoices"></app-table2>
+    <app-table2 [cols]="invoiceColumns" [values]="outputInvoices" (selectedDataEvent)="selectedDataMethod($event)"></app-table2>
   </div>
 </div>
 
@@ -109,8 +109,7 @@
         </div>
       </div>
       <div class="form-group row">
-        <label for="outputPDVToNonRegisteredUser" class="col-sm-4 col-form-label">Iznos izlaznog PDV-a za isporuku izvršenu licu koje nije registrovani obveznik PDV-a
-        </label>
+        <label for="outputPDVToNonRegisteredUser" class="col-sm-4 col-form-label">Iznos izlaznog PDV-a za isporuku izvršenu licu koje nije registrovani obveznik PDV-a</label>
         <div class="col-sm-2">
           <input type="number" class="form-control" formControlName="outputPDVToNonRegisteredUser" [(ngModel)]="outputPDVToNonRegisteredUser" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
         </div>
@@ -140,3 +139,142 @@
     </form>
   </div>
 </ng-template>
+
+<p-dialog header="Izlazna faktura" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="700">
+  <div class="ui-g ui-fluid" *ngIf="outputInvoice">
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="serialNumber">Serijski broj</label>
+      </div>
+      <div class="ui-g-8">
+        <input pInputText id="serialNumber" [(ngModel)]="outputInvoice.serialNumber" style="width: 100%;" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="documentType">Tip dokumenta</label>
+      </div>
+      <div class="ui-g-8">
+        <p-dropdown [options]="documentTypes" [style]="{'width':'100%'}" [(ngModel)]="selectedDocumentType" optionLabel="name"></p-dropdown>
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="invoiceNumber">Broj fakture</label>
+      </div>
+      <div class="ui-g-8">
+        <input id="invoiceNumber" [(ngModel)]="outputInvoice.invoiceNumber" style="width: 100%;" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="documentDate">Datum dokumenta</label>
+      </div>
+      <div class="ui-g-8">
+        <p-calendar [(ngModel)]="documentDate"></p-calendar>
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="company">Partner</label>
+      </div>
+      <div class="ui-g-8">
+        <p-autoComplete [(ngModel)]="selectedCompany" [suggestions]="companyResults" (completeMethod)="searchCompany($event)" [dropdown]="true" field="name" [style]="{'width':'100%'}"></p-autoComplete>
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="invoiceAmount">Iznos fakture</label>
+      </div>
+      <div class="ui-g-8">
+        <input type="number" [(ngModel)]="outputInvoice.invoiceAmount" placeholder="0.00" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="internalInvoiceAmount">Iznos interne fakture u vanposlovne svrhe</label>
+      </div>
+      <div class="ui-g-8">
+        <input type="number" [(ngModel)]="outputInvoice.internalInvoiceAmount" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4">
+        <label for="exportDeliveryAmount">Iznos fakture za izvozne isporuke, na osnovu izvoznih carinskih isprava</label>
+      </div>
+      <div class="ui-g-8">
+        <input type="number" [(ngModel)]="outputInvoice.exportDeliveryAmount" />
+      </div>
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-4">
+      <label for="invoiceAmountForOtherDelivery">Iznos fakture za ostale isporuke oslobodjenje placanja PDV-a</label>
+    </div>
+    <div class="ui-g-8">
+      <input type="number" [(ngModel)]="outputInvoice.invoiceAmountForOtherDelivery" />
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-4">
+      <label for="basisAmountForCalculation">Osnovica za obracun PDV-a za isporuku izvrsenu registrovanom obvezniku PDV-a</label>
+    </div>
+    <div class="ui-g-8">
+      <input type="number" [(ngModel)]="outputInvoice.basisAmountForCalculation" placeholder="0.00" />
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-4">
+      <label for="outputPDV">Iznos izlaznog PDV-a za isporuku izvrsenu registrovanom obvezniku PDV-a</label>
+    </div>
+    <div class="ui-g-8">
+      <input type="number" [(ngModel)]="outputInvoice.outputPDV" />
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-4">
+      <label for="basicforCalulcationToNonRegisteredUser">Osnovica za obracun PDV-a za isporuku izvrsenu licu koje nije registorvani obveznik PDV-a</label>
+    </div>
+    <div class="ui-g-8">
+      <input type="number" [(ngModel)]="outputInvoice.basicforCalulcationToNonRegisteredUser" />
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-4">
+      <label for="outputPDVToNonRegisteredUser">Iznos izlaznog PDV-a za isporuku izvršenu licu koje nije registrovani obveznik PDV-a</label>
+    </div>
+    <div class="ui-g-8">
+      <input type="number" [(ngModel)]="outputInvoice.outputPDVToNonRegisteredUser" />
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-4">
+      <label for="outputPDV32">PDV 32</label>
+    </div>
+    <div class="ui-g-8">
+      <input type="number" [(ngModel)]="outputInvoice.outputPDV32" />
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-4">
+      <label for="outputPDV33">PDV 33</label>
+    </div>
+    <div class="ui-g-8">
+      <input type="number" [(ngModel)]="outputInvoice.outputPDV33" />
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-4">
+      <label for="outputPDV34">PDV 34</label>
+    </div>
+    <div class="ui-g-8">
+      <input type="number" [(ngModel)]="outputInvoice.outputPDV34" />
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="delete()" label="Izbrisi"></button>
+      <button type="button" pButton icon="fa fa-check" (click)="change()" label="Izmijeni"></button>
+    </div>
+  </p-footer>
+</p-dialog>
