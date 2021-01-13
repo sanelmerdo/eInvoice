@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TableColumn } from '../shared/components/table/tableColumn';
 import { Client } from '../models/client';
 import { ClientService } from '../services/client/client.service';
 import { MessageService } from 'primeng/components/common/messageservice';
 import { HeaderService } from '../services/shared/header.service';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, NgForm } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -15,11 +15,13 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class HomeComponent implements OnInit {
 
   submitted = false;
+  changeSubmitted = false;
   clients: Client[] = [];
   client: Client = new Client();
   displayDialog: boolean;
   clientName: string;
-  editProfileForm: FormGroup;
+  addNewCompany: FormGroup;
+  @ViewChild('clientForm', null) clientForm: NgForm;
 
   clientColumns: TableColumn[] = [
     { key: "id", title: "Id", field: "id", header: "Id", colWidth: 100, linkable: true },
@@ -37,9 +39,10 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadClients();
-    this.editProfileForm = this.fb.group({
+    
+    this.addNewCompany = this.fb.group({
       companyName: ['', Validators.required],
-      idNumber: ['', Validators.required],
+      //idNumber: ['', Validators.required],
       pdvNumber: ['', Validators.required]
     });
   }
@@ -85,7 +88,12 @@ export class HomeComponent implements OnInit {
     this.displayDialog = false;
   }
 
-  change() {
+  onChangeSubmit() {
+    if (this.clientForm.invalid)
+      return;
+
+    this.client.idNumber = "4" + this.client.pdvNumber;
+
     this.clientService.updateClient(this.client).subscribe(result => {
       this.loadClients();
       this.messageService.add({ severity: 'success', summary: 'Uspijesno', detail: 'Uspijesno je izmijenjen klijent' });
@@ -114,13 +122,13 @@ export class HomeComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
-    if (this.editProfileForm.invalid) {
+    if (this.addNewCompany.invalid) {
       return;
     }
 
-    this.client.name = this.editProfileForm.value["companyName"];
-    this.client.idNumber = this.editProfileForm.value["idNumber"];
-    this.client.pdvNumber = this.editProfileForm.value["pdvNumber"];
+    this.client.name = this.addNewCompany.value["companyName"];
+    this.client.pdvNumber = this.addNewCompany.value["pdvNumber"];
+    this.client.idNumber = "4" + this.client.pdvNumber;
 
     this.clientService.createClientEntity(this.client).subscribe(result => {
       this.messageService.add({ severity: 'success', summary: 'Komitent', detail: 'Uspijesno ste dodali komintenta!' });
@@ -135,11 +143,18 @@ export class HomeComponent implements OnInit {
   }
 
   // convenience getter for easy access to form fields
-  get f() { return this.editProfileForm.controls; }
+  get f() { return this.addNewCompany.controls; }
 
   closeDialog() {
     this.submitted = false;
-    this.editProfileForm.reset();
+    this.addNewCompany.reset();
     this.modalService.dismissAll();
+  }
+
+  onKeyTab(event) {
+    if (event === undefined)
+      return;
+
+    this.addNewCompany.value["idNumber"] = "4" + event.target.value;
   }
 }

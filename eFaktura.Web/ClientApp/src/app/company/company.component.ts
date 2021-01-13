@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { TableColumn } from '../shared/components/table/tableColumn';
 import { CompanyService } from '../services/company/company.service';
 import { Company } from '../models/company';
 import { MessageService } from 'primeng/components/common/messageservice';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, NgForm } from '@angular/forms';
 import { HeaderService } from '../services/shared/header.service';
 import { Client } from '../models/client';
 
@@ -23,6 +23,8 @@ export class CompanyComponent implements OnInit {
   company: Company = new Company();
   editProfileForm: FormGroup;
   displayDialog: boolean;
+  @ViewChild('companyForm', null) companyForm: NgForm;
+
 
   companyColumns: TableColumn[] = [
     { key: "id", title: "Id", field: "id", header: "Id", colWidth: 100, linkable: false },
@@ -48,7 +50,6 @@ export class CompanyComponent implements OnInit {
     this.loadCompanies();
     this.editProfileForm = this.fb.group({
       companyName: ['', Validators.required],
-      idNumber: ['', Validators.required],
       pdvNumber: ['', Validators.required],
       address: ['']
     });
@@ -103,8 +104,8 @@ export class CompanyComponent implements OnInit {
     }
 
     this.company.name = this.editProfileForm.value["companyName"];
-    this.company.idNumber = this.editProfileForm.value["idNumber"];
     this.company.pdvNumber = this.editProfileForm.value["pdvNumber"];
+    this.company.idNumber = "4" + this.company.pdvNumber;
     this.company.clientId = this.client.id;
 
     this.companyService.createCompany(this.company).subscribe(result => {
@@ -140,6 +141,23 @@ export class CompanyComponent implements OnInit {
   }
 
   change() {
+    this.companyService.updateCompany(this.company).subscribe(result => {
+      this.loadCompanies();
+      this.messageService.add({ severity: 'success', summary: 'Uspijesno', detail: 'Uspijesno je izmijenjena kompanija' });
+    },
+      error => {
+        this.messageService.add({ severity: 'error', summary: 'Greska', detail: 'Doslo je do greske prilikom izmijene kompanije' });
+      });
+
+    this.displayDialog = false;
+  }
+
+  onChangeSubmit() {
+    if (this.companyForm.invalid)
+      return;
+
+    this.company.idNumber = "4" + this.company.pdvNumber;
+
     this.companyService.updateCompany(this.company).subscribe(result => {
       this.loadCompanies();
       this.messageService.add({ severity: 'success', summary: 'Uspijesno', detail: 'Uspijesno je izmijenjena kompanija' });
