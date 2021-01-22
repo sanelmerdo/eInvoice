@@ -13,7 +13,7 @@
     <button pButton type="button" label="Pregled" class="ui-button-secondary" style="width: 100%;" [disabled]="disabled" (click)="reviewInputInvoices()"></button>
   </div>
   <div class="p-col-1">
-    <button pButton type="button" label="Export" class="ui-button-secondary" style="width: 100%;" [disabled]="disabled"></button>
+    <button pButton type="button" label="Export" class="ui-button-secondary" style="width: 100%;" [disabled]="disabled" (click)="exportInputInvoice()"></button>
   </div>
   <div class="p-col-12">
     <app-table2 [cols]="invoiceColumns" [values]="inputInvoices" (selectedDataEvent)="selectedDataMethod($event)"></app-table2>

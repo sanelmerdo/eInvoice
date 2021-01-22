@@ -330,4 +330,14 @@ export class KifComponent implements OnInit {
 
     this.displayDialog = false;
   }
+
+  exportInputInvoice() {
+    let taxPeriod = this.selectedYear.code + this.selectedMonth.code;
+    this.outputInvoiceSevice.generateCsv(this.client.id, taxPeriod).subscribe(result => {
+      this.messageService.add({ severity: 'success', summary: 'Uspijesno', detail: 'Uspijesno je kreiran csv fajl' });
+    },
+      error => {
+        this.messageService.add({ severity: 'error', summary: 'Greska', detail: 'Doslo je do greske prilikom kreiranja csv fajla' });
+      });
+  }
 }

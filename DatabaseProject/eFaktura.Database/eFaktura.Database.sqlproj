@@ -57,11 +57,16 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tables" />
+    <Folder Include="StoredProcedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Client.sql" />
     <Build Include="Tables\Company.sql" />
     <Build Include="Tables\OutputInvoice.sql" />
     <Build Include="Tables\InputInvoice.sql" />
+    <None Include="StoredProcedures\dbo.ParserConfiguration_Select.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tables\ParserConfiguration.sql" />
   </ItemGroup>
 </Project>

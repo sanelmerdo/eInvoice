@@ -1,3 +1,4 @@
+using eFaktura.Core.Models;
 using eFaktura.Services.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,6 +24,9 @@ namespace eFaktura.Web
         {
             services.AddApplicationService(Configuration);
             services.AddControllersWithViews().AddNewtonsoftJson();
+
+            services.Configure<InputInvoice>(Configuration.GetSection("InputInvoice"));
+            services.Configure<OutputInvoice>(Configuration.GetSection("OutputInvoice"));
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen();

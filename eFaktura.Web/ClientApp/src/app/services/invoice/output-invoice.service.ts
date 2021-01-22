@@ -24,4 +24,8 @@ export class OutputInvoiceService {
   public deleteOutputInvoice(id: number) {
     return this.http.deleteRequest<any>("outputInvoice/delete/" + id);
   }
+
+  public generateCsv(clientId: number, taxNumber: string) {
+    return this.http.getRequest<any>("csvgenerator/output/clientId/" + clientId + "/taxPeriod/" + taxNumber);
+  }
 }

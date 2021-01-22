@@ -24,4 +24,8 @@ export class InputInvoiceService {
   public deleteInputInvoice(id: number) {
     return this.http.deleteRequest<any>("inputInvoice/delete/" + id);
   }
+
+  public generateCsv(clientId: number, taxNumber: string) {
+    return this.http.getRequest<any>("csvgenerator/input/clientId/" + clientId + "/taxPeriod/" + taxNumber);
+  }
 }

@@ -1,11 +1,13 @@
 ﻿using eFaktura.Abstractions;
 using eFaktura.Core;
+using eFaktura.Core.Models;
 using eFaktura.Services.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
+using System.Configuration;
 
 namespace eFaktura.Services.Extensions
 {
@@ -31,7 +33,8 @@ namespace eFaktura.Services.Extensions
             services.TryAddScoped<ICompanyService, CompanyService>();
             services.TryAddScoped<IOutputInvoiceService, OutputInvoiceService>();
             services.TryAddScoped<IInputInvoiceService, InputInvoiceService>();
-            
+            services.TryAddScoped<IGenerateCsvService, CsvGeneratorService>();
+
             // Add service db context
             return services.AddDataServiceDbContext<ApplicationDbContext>(configuration.GetConnectionString("DefaultConnection"));
         }

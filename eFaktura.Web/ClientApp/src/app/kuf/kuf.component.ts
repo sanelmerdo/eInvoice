@@ -248,7 +248,7 @@ export class KufComponent implements OnInit {
     this.inputInvoice.documentDate = this.newKuf.value["documentDate"];
     this.inputInvoice.documentDate = this.datepipe.transform(this.inputInvoice.documentDate, 'yyyy-MM-dd');
     this.inputInvoice.documentReceivedDate = this.newKuf.value["documentReceivedDate"];
-    this.inputInvoice.documentReceivedDate = this.datepipe.transform(this.inputInvoice.documentReceivedDate);
+    this.inputInvoice.documentReceivedDate = this.datepipe.transform(this.inputInvoice.documentReceivedDate, 'yyyy-MM-dd');
     this.inputInvoice.companyId = this.selectedCompany.id;
     this.inputInvoice.invoiceAmountWithoutPdv = this.checkIfNumberUndefined(this.newKuf.value["invoiceAmountWithoutPdv"]);
     this.inputInvoice.invoiceAmountWithPdv = this.checkIfNumberUndefined(this.newKuf.value["invoiceAmountWithPdv"]);
@@ -330,5 +330,15 @@ export class KufComponent implements OnInit {
       });
 
     this.displayDialog = false;
+  }
+
+  exportInputInvoice() {
+    let taxPeriod = this.selectedYear.code + this.selectedMonth.code;
+    this.inputInvoiceSevice.generateCsv(this.client.id, taxPeriod).subscribe(result => {
+      this.messageService.add({ severity: 'success', summary: 'Uspijesno', detail: 'Uspijesno je kreiran csv fajl' });
+    },
+      error => {
+        this.messageService.add({ severity: 'error', summary: 'Greska', detail: 'Doslo je do greske prilikom kreiranja csv fajla' });
+      });
   }
 }
