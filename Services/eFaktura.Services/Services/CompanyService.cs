@@ -40,7 +40,8 @@ namespace eFaktura.Services.Services
                                                                                         ClientId = entity.ClientId,
                                                                                         IdNumber = entity.IdNumber,
                                                                                         PdvNumber = entity.PdvNumber,
-                                                                                        Name = entity.Name
+                                                                                        Name = entity.Name,
+                                                                                        Address = entity.Address
                                                                                      });
 
         /// <inheritdoc />

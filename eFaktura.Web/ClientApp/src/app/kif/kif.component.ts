@@ -48,16 +48,16 @@ export class KifComponent implements OnInit {
     { key: "invoiceNumber", title: "Broj fakture", field: "invoiceNumber", header: "Broj fakture", colWidth: 150 },
     { key: "documentDate", title: "Datum naloga", field: "documentDate", header: "Datum naloga", colWidth: 100 },
     { key: "invoiceAmount", title: "Iznos fakture", field: "invoiceAmount", header: "Iznos fakture", colWidth: 100 },
-    { key: "internalInvoiceAmount", title: "Iznos Interne fakture", field: "internalInvoiceAmount", header: "Iznos Interne fakture", colWidth: 100 },
-    { key: "exportDeliveryAmount", title: "Iznos fakture za izvozne isporuke", field: "exportDeliveryAmount", header: "Iznos fakture za izvozne isporuke", colWidth: 100 },
-    { key: "invoiceAmountForOtherDelivery", title: "Iznos fakture za ostale isporuke", field: "invoiceAmountForOtherDelivery", header: "Iznos fakture za ostale isporuke", colWidth: 100 },
-    { key: "basisAmountForCalculation", title: "Osnovica za obracun PDV-a reg. obvezniku", field: "basisAmountForCalculation", header: "Osnovica za obracun PDV-a reg. obvezniku", colWidth: 100 },
-    { key: "outputPDV", title: "Izlazni Pdv", field: "outputPDV", header: "Izlazni Pdv", colWidth: 100 },
-    { key: "basicforCalulcationToNonRegisteredUser", title: "Osnovica za obracun PDV-a nereg. korisniku", field: "basicforCalulcationToNonRegisteredUser", header: "Osnovica za obracun PDV-a nereg. korisniku", colWidth: 100 },
-    { key: "outputPDVToNonRegisteredUser", title: "Iznos izl.PDV-a izvrsenu nereg. korisniku", field: "outputPDVToNonRegisteredUser", header: "Iznos izl.PDV-a izvrsenu nereg. korisniku", colWidth: 100 },
-    { key: "outputPDV32", title: "Pdv 32", field: "outputPDV32", header: "Pdv 32", colWidth: 100 },
-    { key: "outputPDV33", title: "Pdv 33", field: "outputPDV33", header: "Pdv 33", colWidth: 100 },
-    { key: "outputPDV34", title: "Pdv 34", field: "outputPDV34", header: "Pdv 34", colWidth: 100 }
+    { key: "internalInvoiceAmount", title: "Iznos Interne fakture", field: "internalInvoiceAmount", header: "Iznos Interne fakture", colWidth: 100, decimalPipe: true },
+    { key: "exportDeliveryAmount", title: "Iznos fakture za izvozne isporuke", field: "exportDeliveryAmount", header: "Iznos fakture za izvozne isporuke", colWidth: 100, decimalPipe: true },
+    { key: "invoiceAmountForOtherDelivery", title: "Iznos fakture za ostale isporuke", field: "invoiceAmountForOtherDelivery", header: "Iznos fakture za ostale isporuke", colWidth: 100, decimalPipe: true },
+    { key: "basisAmountForCalculation", title: "Osnovica za obracun PDV-a reg. obvezniku", field: "basisAmountForCalculation", header: "Osnovica za obracun PDV-a reg. obvezniku", colWidth: 100, decimalPipe: true },
+    { key: "outputPDV", title: "Izlazni Pdv", field: "outputPDV", header: "Izlazni Pdv", colWidth: 100, decimalPipe: true },
+    { key: "basicforCalulcationToNonRegisteredUser", title: "Osnovica za obracun PDV-a nereg. korisniku", field: "basicforCalulcationToNonRegisteredUser", header: "Osnovica za obracun PDV-a nereg. korisniku", colWidth: 100, decimalPipe: true },
+    { key: "outputPDVToNonRegisteredUser", title: "Iznos izl.PDV-a izvrsenu nereg. korisniku", field: "outputPDVToNonRegisteredUser", header: "Iznos izl.PDV-a izvrsenu nereg. korisniku", colWidth: 100, decimalPipe: true },
+    { key: "outputPDV32", title: "Pdv 32", field: "outputPDV32", header: "Pdv 32", colWidth: 100, decimalPipe: true },
+    { key: "outputPDV33", title: "Pdv 33", field: "outputPDV33", header: "Pdv 33", colWidth: 100, decimalPipe: true },
+    { key: "outputPDV34", title: "Pdv 34", field: "outputPDV34", header: "Pdv 34", colWidth: 100, decimalPipe: true }
   ];
 
   months: Month[] = [
@@ -134,7 +134,7 @@ export class KifComponent implements OnInit {
       outputPDV: [''],
       basicforCalulcationToNonRegisteredUser: [''],
       outputPDVToNonRegisteredUser: [''],
-      outputPDV32: ['0.00'],
+      outputPDV32: [''],
       outputPDV33: [''],
       outputPDV34: ['']
     });
@@ -225,6 +225,7 @@ export class KifComponent implements OnInit {
     this.submitted = false;
     this.newKif.reset();
     this.modalService.dismissAll();
+    this.loadOutputInvoices();
   }
 
   open(content) {
@@ -247,8 +248,27 @@ export class KifComponent implements OnInit {
   onKeyTab(event) {
     if (event === undefined)
       return;
-    
+
     event.target.value = parseFloat(event.target.value).toFixed(2);
+  }
+
+  invoiceAmountChanged(event) {
+    if (event === undefined)
+      return;
+
+    let basisAmountForCalculation = this.newKif.get('basisAmountForCalculation');
+    let outputPDV = this.newKif.get('outputPDV');
+
+    basisAmountForCalculation.setValue((event * 0.83).toFixed(2));
+    outputPDV.setValue((event * 0.17).toFixed(2));
+
+    if (Object.keys(this.outputInvoice).length === 0)
+      return;
+
+    let basisAmountString = (this.outputInvoice.invoiceAmount * 0.83).toFixed(2);
+    this.outputInvoice.basisAmountForCalculation = parseFloat(basisAmountString);
+    let outputPdvString = (this.outputInvoice.invoiceAmount * 0.17).toFixed(2);
+    this.outputInvoice.outputPDV = parseFloat(outputPdvString);
   }
 
   onOptionSelected(event) {

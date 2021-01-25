@@ -41,7 +41,7 @@ namespace eFaktura.Services
                     using (var writer = new StreamWriter(filePath))
                     using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
                     {
-                        csv.Configuration.Delimiter = ",";
+                        csv.Configuration.Delimiter = ";";
                         csv.Configuration.HasHeaderRecord = false;
 
                         csv.WriteRecords<HeaderRecord>(firstRecord);

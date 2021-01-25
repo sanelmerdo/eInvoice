@@ -50,7 +50,7 @@ export class CompanyComponent implements OnInit {
     this.loadCompanies();
     this.editProfileForm = this.fb.group({
       companyName: ['', Validators.required],
-      pdvNumber: ['', Validators.required],
+      pdvNumber: [''],
       address: ['']
     });
   }
@@ -79,6 +79,7 @@ export class CompanyComponent implements OnInit {
   loadCompanies() {
     this.companyService.getAllCompanies(this.client.id).subscribe(result => {
       this.companies = result;
+      console.log(this.companies);
     });
   }
 
@@ -105,7 +106,8 @@ export class CompanyComponent implements OnInit {
 
     this.company.name = this.editProfileForm.value["companyName"];
     this.company.pdvNumber = this.editProfileForm.value["pdvNumber"];
-    this.company.idNumber = "4" + this.company.pdvNumber;
+    if (this.company.pdvNumber != "")
+      this.company.idNumber = "4" + this.company.pdvNumber;
     this.company.clientId = this.client.id;
 
     this.companyService.createCompany(this.company).subscribe(result => {
@@ -156,7 +158,8 @@ export class CompanyComponent implements OnInit {
     if (this.companyForm.invalid)
       return;
 
-    this.company.idNumber = "4" + this.company.pdvNumber;
+    if (this.company.pdvNumber != "")
+      this.company.idNumber = "4" + this.company.pdvNumber;
 
     this.companyService.updateCompany(this.company).subscribe(result => {
       this.loadCompanies();

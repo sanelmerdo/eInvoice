@@ -3,7 +3,7 @@
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[ClientId] [int] NOT NULL,
 	[Name] [nvarchar](50) NOT NULL,
-	[PdvNumber] [nvarchar](12) NOT NULL,
+	[PdvNumber] [nvarchar](12) NULL,
 	[IdNumber] [nvarchar](13) NOT NULL,
 	[CreatedDate] [DateTime] NOT NULL,
 	[ModifiedDate] [DateTime] NULL,

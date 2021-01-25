@@ -48,15 +48,15 @@ export class KufComponent implements OnInit {
     { key: "invoiceNumber", title: "Broj fakture", field: "invoiceNumber", header: "Broj fakture", colWidth: 150 },
     { key: "documentDate", title: "Datum fakture", field: "documentDate", header: "Datum fakture", colWidth: 100 },
     { key: "documentReceivedDate", title: "Datum prijema fakture", field: "documentReceivedDate", header: "Datum prijema fakture", colWidth: 100 },
-    { key: "invoiceAmountWithoutPdv", title: "Iznos fakture bez PDV-a", field: "invoiceAmountWithoutPdv", header: "Iznos fakture bez PDV-a", colWidth: 100 },
-    { key: "invoiceAmountWithPdv", title: "Iznos fakture sa PDV-om", field: "invoiceAmountWithPdv", header: "Iznos fakture sa PDV-om", colWidth: 100 },
-    { key: "flatFeeAmount", title: "Iznos pausalne naknade", field: "flatFeeAmount", header: "Iznos pausalne naknade", colWidth: 100 },
-    { key: "inputPdvAmount", title: "Iznos ulaznog PDV-a", field: "inputPdvAmount", header: "Iznos ulaznog PDV-a", colWidth: 100 },
-    { key: "inputPdvWhichCanBeRefused", title: "Ulazni PDV koji se moze odbiti", field: "inputPdvWhichCanBeRefused", header: "Ulazni PDV koji se moze odbiti", colWidth: 100 },
-    { key: "inputPdvWhichCannotBeRefused", title: "Ulazni PDV koji se ne moze odbiti", field: "inputPdvWhichCannotBeRefused", header: "Ulazni PDV koji se ne moze odbiti", colWidth: 100 },
-    { key: "inputPdv32", title: "Pdv 32", field: "inputPdv32", header: "Pdv 32", colWidth: 100 },
-    { key: "inputPdv33", title: "Pdv 33", field: "inputPdv33", header: "Pdv 33", colWidth: 100 },
-    { key: "inputPdv34", title: "Pdv 34", field: "inputPdv34", header: "Pdv 34", colWidth: 100 }
+    { key: "invoiceAmountWithoutPdv", title: "Iznos fakture bez PDV-a", field: "invoiceAmountWithoutPdv", header: "Iznos fakture bez PDV-a", colWidth: 100, decimalPipe: true },
+    { key: "invoiceAmountWithPdv", title: "Iznos fakture sa PDV-om", field: "invoiceAmountWithPdv", header: "Iznos fakture sa PDV-om", colWidth: 100, decimalPipe: true },
+    { key: "flatFeeAmount", title: "Iznos pausalne naknade", field: "flatFeeAmount", header: "Iznos pausalne naknade", colWidth: 100, decimalPipe: true },
+    { key: "inputPdvAmount", title: "Iznos ulaznog PDV-a", field: "inputPdvAmount", header: "Iznos ulaznog PDV-a", colWidth: 100, decimalPipe: true },
+    { key: "inputPdvWhichCanBeRefused", title: "Ulazni PDV koji se moze odbiti", field: "inputPdvWhichCanBeRefused", header: "Ulazni PDV koji se moze odbiti", colWidth: 100, decimalPipe: true },
+    { key: "inputPdvWhichCannotBeRefused", title: "Ulazni PDV koji se ne moze odbiti", field: "inputPdvWhichCannotBeRefused", header: "Ulazni PDV koji se ne moze odbiti", colWidth: 100, decimalPipe: true },
+    { key: "inputPdv32", title: "Pdv 32", field: "inputPdv32", header: "Pdv 32", colWidth: 100, decimalPipe: true },
+    { key: "inputPdv33", title: "Pdv 33", field: "inputPdv33", header: "Pdv 33", colWidth: 100, decimalPipe: true },
+    { key: "inputPdv34", title: "Pdv 34", field: "inputPdv34", header: "Pdv 34", colWidth: 100, decimalPipe: true }
   ];
 
   months: Month[] = [

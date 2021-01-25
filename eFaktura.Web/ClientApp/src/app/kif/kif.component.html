@@ -69,7 +69,8 @@
       <div class="form-group row">
         <label for="invoiceAmount" class="col-sm-4 col-form-label">Iznos fakture ili dokumenta</label>
         <div class="col-sm-2">
-          <input type="number" class="form-control" formControlName="invoiceAmount" (keydown.tab)="onKeyTab($event)" [(ngModel)]="invoiceAmount" placeholder="0.00" />
+          <input type="number" id="invoiceAmount" class="form-control" formControlName="invoiceAmount" (keydown.tab)="onKeyTab($event)"
+                 [(ngModel)]="invoiceAmount" placeholder="0.00" (ngModelChange)="invoiceAmountChanged($event)"/>
         </div>
       </div>
       <div class="form-group row">
@@ -93,7 +94,7 @@
       <div class="form-group row">
         <label for="basisAmountForCalculation" class="col-sm-4 col-form-label">Osnovica za obracun PDV-a za isporuku izvrsenu registrovanom obvezniku PDV-a</label>
         <div class="col-sm-2">
-          <input type="number" class="form-control" formControlName="basisAmountForCalculation" [(ngModel)]="basisAmountForCalculation" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+          <input type="number" id="basisAmountForCalculation" class="form-control" formControlName="basisAmountForCalculation" [(ngModel)]="basisAmountForCalculation" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
         </div>
       </div>
       <div class="form-group row">
@@ -187,7 +188,7 @@
         <label for="invoiceAmount">Iznos fakture</label>
       </div>
       <div class="ui-g-8">
-        <input type="number" [(ngModel)]="outputInvoice.invoiceAmount" placeholder="0.00" />
+        <input type="number" [(ngModel)]="outputInvoice.invoiceAmount" placeholder="0.00" (ngModelChange)="invoiceAmountChanged($event)" (keydown.tab)="onKeyTab($event)" />
       </div>
     </div>
     <div class="ui-g-12">
@@ -195,7 +196,7 @@
         <label for="internalInvoiceAmount">Iznos interne fakture u vanposlovne svrhe</label>
       </div>
       <div class="ui-g-8">
-        <input type="number" [(ngModel)]="outputInvoice.internalInvoiceAmount" />
+        <input type="number" [(ngModel)]="outputInvoice.internalInvoiceAmount" (keydown.tab)="onKeyTab($event)" />
       </div>
     </div>
     <div class="ui-g-12">
@@ -203,7 +204,7 @@
         <label for="exportDeliveryAmount">Iznos fakture za izvozne isporuke, na osnovu izvoznih carinskih isprava</label>
       </div>
       <div class="ui-g-8">
-        <input type="number" [(ngModel)]="outputInvoice.exportDeliveryAmount" />
+        <input type="number" [(ngModel)]="outputInvoice.exportDeliveryAmount" (keydown.tab)="onKeyTab($event)"/>
       </div>
     </div>
   </div>
@@ -212,7 +213,7 @@
       <label for="invoiceAmountForOtherDelivery">Iznos fakture za ostale isporuke oslobodjenje placanja PDV-a</label>
     </div>
     <div class="ui-g-8">
-      <input type="number" [(ngModel)]="outputInvoice.invoiceAmountForOtherDelivery" />
+      <input type="number" [(ngModel)]="outputInvoice.invoiceAmountForOtherDelivery" (keydown.tab)="onKeyTab($event)" />
     </div>
   </div>
   <div class="ui-g-12">
@@ -220,7 +221,7 @@
       <label for="basisAmountForCalculation">Osnovica za obracun PDV-a za isporuku izvrsenu registrovanom obvezniku PDV-a</label>
     </div>
     <div class="ui-g-8">
-      <input type="number" [(ngModel)]="outputInvoice.basisAmountForCalculation" placeholder="0.00" />
+      <input type="number" [(ngModel)]="outputInvoice.basisAmountForCalculation" placeholder="0.00" (keydown.tab)="onKeyTab($event)" />
     </div>
   </div>
   <div class="ui-g-12">
@@ -228,7 +229,7 @@
       <label for="outputPDV">Iznos izlaznog PDV-a za isporuku izvrsenu registrovanom obvezniku PDV-a</label>
     </div>
     <div class="ui-g-8">
-      <input type="number" [(ngModel)]="outputInvoice.outputPDV" />
+      <input type="number" [(ngModel)]="outputInvoice.outputPDV" (keydown.tab)="onKeyTab($event)" />
     </div>
   </div>
   <div class="ui-g-12">
@@ -236,7 +237,7 @@
       <label for="basicforCalulcationToNonRegisteredUser">Osnovica za obracun PDV-a za isporuku izvrsenu licu koje nije registorvani obveznik PDV-a</label>
     </div>
     <div class="ui-g-8">
-      <input type="number" [(ngModel)]="outputInvoice.basicforCalulcationToNonRegisteredUser" />
+      <input type="number" [(ngModel)]="outputInvoice.basicforCalulcationToNonRegisteredUser" (keydown.tab)="onKeyTab($event)" />
     </div>
   </div>
   <div class="ui-g-12">
@@ -244,7 +245,7 @@
       <label for="outputPDVToNonRegisteredUser">Iznos izlaznog PDV-a za isporuku izvršenu licu koje nije registrovani obveznik PDV-a</label>
     </div>
     <div class="ui-g-8">
-      <input type="number" [(ngModel)]="outputInvoice.outputPDVToNonRegisteredUser" />
+      <input type="number" [(ngModel)]="outputInvoice.outputPDVToNonRegisteredUser" (keydown.tab)="onKeyTab($event)"/>
     </div>
   </div>
   <div class="ui-g-12">
@@ -252,7 +253,7 @@
       <label for="outputPDV32">PDV 32</label>
     </div>
     <div class="ui-g-8">
-      <input type="number" [(ngModel)]="outputInvoice.outputPDV32" />
+      <input type="number" [(ngModel)]="outputInvoice.outputPDV32" (keydown.tab)="onKeyTab($event)" />
     </div>
   </div>
   <div class="ui-g-12">
@@ -260,7 +261,7 @@
       <label for="outputPDV33">PDV 33</label>
     </div>
     <div class="ui-g-8">
-      <input type="number" [(ngModel)]="outputInvoice.outputPDV33" />
+      <input type="number" [(ngModel)]="outputInvoice.outputPDV33" (keydown.tab)="onKeyTab($event)"/>
     </div>
   </div>
   <div class="ui-g-12">
@@ -268,7 +269,7 @@
       <label for="outputPDV34">PDV 34</label>
     </div>
     <div class="ui-g-8">
-      <input type="number" [(ngModel)]="outputInvoice.outputPDV34" />
+      <input type="number" [(ngModel)]="outputInvoice.outputPDV34" (keydown.tab)="onKeyTab($event)"/>
     </div>
   </div>
   <p-footer>

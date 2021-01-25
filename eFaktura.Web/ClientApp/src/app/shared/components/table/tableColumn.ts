@@ -49,4 +49,6 @@ export interface TableColumn {
 
   /** Number of charactes to display initially */
   cutTextTo?: number;
+
+  decimalPipe?: boolean;
 }
