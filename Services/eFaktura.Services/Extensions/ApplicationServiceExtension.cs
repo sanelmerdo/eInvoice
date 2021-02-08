@@ -3,6 +3,7 @@ using eFaktura.Core;
 using eFaktura.Core.Models;
 using eFaktura.Services.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -50,7 +51,10 @@ namespace eFaktura.Services.Extensions
                 options
                     .EnableDetailedErrors()
                     .EnableSensitiveDataLogging()
-                    .UseSqlServer(connectionString);
+                    .UseSqlServer(connectionString, sqlServerOptionsAction: sqlOptions => 
+                    {
+                        sqlOptions.EnableRetryOnFailure();
+                    });
             });
         }
     }

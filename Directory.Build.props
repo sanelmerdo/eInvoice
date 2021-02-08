@@ -1,0 +1,31 @@
+<Project>
+
+  <!-- Global properties -->
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Product>$(MSBuildProjectName)</Product>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>$(MSBuildProjectName)</RootNamespace>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+	  <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+
+  <!-- Package versions -->
+  <PropertyGroup>
+    <CsvHelperVersion>19.0.0</CsvHelperVersion>
+    <MicrosoftAspNetCoreMvcFormattersJsonVersion>2.2.0</MicrosoftAspNetCoreMvcFormattersJsonVersion>
+    <MicrosoftAspNetCoreMvcNewtonsoftJsonVersion>3.1.10</MicrosoftAspNetCoreMvcNewtonsoftJsonVersion>
+    <MicrosoftAspNetCoreSpaServicesExtensionsVersion>3.1.6</MicrosoftAspNetCoreSpaServicesExtensionsVersion>
+    <MicrosoftEntityFrameworkCoreSqlServerVersion>3.1.0</MicrosoftEntityFrameworkCoreSqlServerVersion>
+    <MicrosoftEntityFrameworkCoreVersion>3.1.0</MicrosoftEntityFrameworkCoreVersion>
+    <MicrosoftExtensionsConfigurationVersion>5.0.0</MicrosoftExtensionsConfigurationVersion>
+    <MicrosoftVisualStudioWebCodeGenerationDesignVersion>3.1.4</MicrosoftVisualStudioWebCodeGenerationDesignVersion>
+    <SwashbuckleAspNetCoreVersion>5.6.3</SwashbuckleAspNetCoreVersion>
+    <SystemConfigurationConfigurationManagerVersion>5.0.0</SystemConfigurationConfigurationManagerVersion>
+  </PropertyGroup>
+</Project>

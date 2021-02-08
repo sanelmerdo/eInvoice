@@ -55,7 +55,7 @@
 </ng-template>
 
 <p-dialog header="Kompanija" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="700">
-  <form #companyForm="ngForm" (ngSubmit)="onChangeSubmit(companyForm)">
+  <form #companyForm="ngForm" (ngSubmit)="onChangeSubmit()">
     <div class="ui-g ui-fluid">
       <div class="ui-g-12">
         <div class="ui-g-4">
