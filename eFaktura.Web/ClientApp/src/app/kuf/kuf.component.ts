@@ -39,6 +39,7 @@ export class KufComponent implements OnInit {
   submitted = false;
   companyResults: string[] = [];
   selectedDocumentType: DocumentType;
+  companyPdvType: number;
 
   invoiceColumns: TableColumn[] = [
     { key: "id", title: "Id", field: "id", header: "Id", linkable: false, colWidth: 70 },
@@ -135,7 +136,8 @@ export class KufComponent implements OnInit {
       inputPdvWhichCannotBeRefused: [''],
       inputPdv32: [''],
       inputPdv33: [''],
-      inputPdv34: ['']
+      inputPdv34: [''],
+      companyPdvType: ['']
     });
 
     this.data.currentMessage.subscribe(result => this.client = result);
@@ -340,5 +342,54 @@ export class KufComponent implements OnInit {
       error => {
         this.messageService.add({ severity: 'error', summary: 'Greska', detail: 'Doslo je do greske prilikom kreiranja csv fajla' });
       });
+  }
+
+  companyPdvTypePopupChanged(event) {
+    if (event === undefined || event == null)
+      return;
+
+    this.inputInvoice.invoiceAmountWithPdv = parseFloat((this.inputInvoice.invoiceAmountWithoutPdv * 1.17).toFixed(2));
+    this.inputInvoice.inputPdvAmount = parseFloat((this.inputInvoice.invoiceAmountWithPdv - this.inputInvoice.invoiceAmountWithoutPdv).toFixed(2));
+
+    if (event == 1) {
+      this.inputInvoice.inputPdvWhichCanBeRefused = parseFloat(this.inputInvoice.inputPdvAmount.toFixed(2));
+      this.inputInvoice.inputPdvWhichCannotBeRefused = 0;
+    }
+    else {
+      this.inputInvoice.inputPdvWhichCanBeRefused = 0;
+      this.inputInvoice.inputPdvWhichCannotBeRefused = parseFloat(this.inputInvoice.inputPdvAmount.toFixed(2));
+    }
+
+    this.inputInvoice.inputPdv32 = parseFloat(this.inputInvoice.inputPdvAmount.toFixed(2));
+  }
+
+  companyPdvTypeChanged(event) {
+    if (event === undefined)
+      return;
+
+    let invoiceAmountWithoutPdv = this.newKuf.get('invoiceAmountWithoutPdv');
+    if (invoiceAmountWithoutPdv === undefined)
+      return;
+
+    let invoiceAmountWithPdvNumber = invoiceAmountWithoutPdv.value * 1.17;
+    let invoiceAmountWithPdv = this.newKuf.get('invoiceAmountWithPdv');
+    invoiceAmountWithPdv.setValue(invoiceAmountWithPdvNumber.toFixed(2));
+
+    let inputPdvAmount = this.newKuf.get('inputPdvAmount');
+    inputPdvAmount.setValue((invoiceAmountWithPdvNumber - invoiceAmountWithoutPdv.value).toFixed(2));
+
+    let inputPdvWhichCanBeRefused = this.newKuf.get('inputPdvWhichCanBeRefused');
+    let inputPdvWhichCannotBeRefused = this.newKuf.get('inputPdvWhichCannotBeRefused');
+    if (event == 1) {
+      inputPdvWhichCanBeRefused.setValue(inputPdvAmount.value);
+      inputPdvWhichCannotBeRefused.setValue(0);
+    }
+    else if (event == 0) {
+      inputPdvWhichCanBeRefused.setValue(0);
+      inputPdvWhichCannotBeRefused.setValue(inputPdvAmount.value);
+    }
+
+    let inputPdv32 = this.newKuf.get('inputPdv32');
+    inputPdv32.setValue(inputPdvAmount.value);
   }
 }

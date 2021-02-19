@@ -11,7 +11,6 @@ export class Table2Component {
 
   @Input() cols: TableColumn;
   @Input() values: any;
-  //@Input() scrollable: boolean = true;
   @Output() selectedDataEvent = new EventEmitter<any>();
   @Output() selectedClient = new EventEmitter<any>();
   selectedValue: any;

@@ -259,16 +259,38 @@ export class KifComponent implements OnInit {
     let basisAmountForCalculation = this.newKif.get('basisAmountForCalculation');
     let outputPDV = this.newKif.get('outputPDV');
 
-    basisAmountForCalculation.setValue((event * 0.83).toFixed(2));
-    outputPDV.setValue((event * 0.17).toFixed(2));
+    basisAmountForCalculation.setValue((event / 117 * 100).toFixed(2));
+    outputPDV.setValue((event / 117 * 17).toFixed(2));
 
     if (Object.keys(this.outputInvoice).length === 0)
       return;
 
-    let basisAmountString = (this.outputInvoice.invoiceAmount * 0.83).toFixed(2);
+    let basisAmountString = (this.outputInvoice.invoiceAmount / 117 * 100).toFixed(2);
     this.outputInvoice.basisAmountForCalculation = parseFloat(basisAmountString);
-    let outputPdvString = (this.outputInvoice.invoiceAmount * 0.17).toFixed(2);
+    let outputPdvString = (this.outputInvoice.invoiceAmount / 117 * 17).toFixed(2);
     this.outputInvoice.outputPDV = parseFloat(outputPdvString);
+  }
+
+  internalInvoiceAmountChanged(event) {
+    if (event === undefined)
+      return;
+
+    let basicforCalulcationToNonRegisteredUser = this.newKif.get('basicforCalulcationToNonRegisteredUser');
+    let outputPDVToNonRegisteredUser = this.newKif.get('outputPDVToNonRegisteredUser');
+    let outputPDV32 = this.newKif.get('outputPDV32');
+
+    basicforCalulcationToNonRegisteredUser.setValue((event / 117 * 100).toFixed(2));
+    outputPDVToNonRegisteredUser.setValue((event / 117 * 17).toFixed(2));
+    outputPDV32.setValue((event / 117 * 17).toFixed(2));
+
+    if (Object.keys(this.outputInvoice).length === 0)
+      return;
+
+    let basicforCalulcationToNonRegisteredUserString = (this.outputInvoice.internalInvoiceAmount / 117 * 100).toFixed(2);
+    this.outputInvoice.basicforCalulcationToNonRegisteredUser = parseFloat(basicforCalulcationToNonRegisteredUserString);
+    let outputPDVToNonRegisteredUserString = (this.outputInvoice.internalInvoiceAmount / 117 * 17).toFixed(2);
+    this.outputInvoice.outputPDVToNonRegisteredUser = parseFloat(outputPDVToNonRegisteredUserString);
+    this.outputInvoice.outputPDV32 = this.outputInvoice.outputPDVToNonRegisteredUser;
   }
 
   onOptionSelected(event) {
@@ -337,8 +359,6 @@ export class KifComponent implements OnInit {
   }
 
   change() {
-    this.outputInvoice.documentType = this.selectedDocumentType.code;
-    this.outputInvoice.companyId = this.selectedCompany.id;
     this.outputInvoice.documentDate = this.datepipe.transform(this.documentDate, 'yyyy-MM-dd');
     this.outputInvoiceSevice.updateOutputInvoice(this.outputInvoice).subscribe(result => {
       this.loadOutputInvoices();

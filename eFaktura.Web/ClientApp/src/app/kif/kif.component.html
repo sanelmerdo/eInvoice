@@ -76,7 +76,8 @@
       <div class="form-group row">
         <label for="internalInvoiceAmount" class="col-sm-4 col-form-label">Iznos interne fakture u vanposlovne svrhe</label>
         <div class="col-sm-2">
-          <input type="number" class="form-control" formControlName="internalInvoiceAmount" [(ngModel)]="internalInvoiceAmount" (keydown.tab)="onKeyTab($event)" placeholder="0.00" />
+          <input type="number" class="form-control" formControlName="internalInvoiceAmount" [(ngModel)]="internalInvoiceAmount" (keydown.tab)="onKeyTab($event)"
+                 placeholder="0.00" (ngModelChange)="internalInvoiceAmountChanged($event)"/>
         </div>
       </div>
       <div class="form-group row">
@@ -196,7 +197,7 @@
         <label for="internalInvoiceAmount">Iznos interne fakture u vanposlovne svrhe</label>
       </div>
       <div class="ui-g-8">
-        <input type="number" [(ngModel)]="outputInvoice.internalInvoiceAmount" (keydown.tab)="onKeyTab($event)" />
+        <input type="number" [(ngModel)]="outputInvoice.internalInvoiceAmount" (keydown.tab)="onKeyTab($event)" (ngModelChange)="internalInvoiceAmountChanged($event)"/>
       </div>
     </div>
     <div class="ui-g-12">
